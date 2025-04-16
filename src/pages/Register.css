@@ -1,0 +1,59 @@
+@import '../theme.css';
+
+.register-container {
+    max-width: 400px;
+    margin: 20px auto;
+    background: var(--secondary);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  }
+  
+  .register-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .register-container label {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .register-container input {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .register-container button {
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .register-container button:hover {
+    background-color: #27ae60;
+  }
+  
+  .register-container p.error {
+    color: red;
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  .register-container p.success {
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+  }
+  

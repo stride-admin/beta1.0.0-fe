@@ -1,0 +1,82 @@
+.menu {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--tertiary);
+    align-items: center;
+    height: 70px;
+    padding: 0 20px;
+    position: fixed;
+    width: 91%;
+    border-radius: 30px;
+    bottom: 20px;
+}
+
+.menu-icon {
+    height: 50px;
+    opacity: 0.5;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-icon.selected {
+    opacity: 1 !important;
+}
+
+.menu-icon:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    scale: 1.1;
+}
+
+.add-icon {
+    height: 80px;
+    transition: all 0.3s ease-in-out;
+}
+
+.add-icon:hover {
+    cursor: pointer;
+    scale: 1.2;
+    opacity: 0.8;
+}
+
+.add-modal-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+}
+
+.add-modal-option {
+    display: flex;
+    align-items: center;
+    background-color: var(--tertiary);
+    color: var(--text);
+    padding: 10px;
+    gap: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.2s ease;
+    will-change: transform, opacity;
+}
+
+/* Styles for the animation states */
+.add-modal-option.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.add-modal-option.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.add-modal-option:hover {
+    background-color: #a7a7a7;
+}
+
+.add-modal-option img {
+    width: 32px;
+    height: 32px;
+}

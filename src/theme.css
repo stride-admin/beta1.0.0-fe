@@ -1,0 +1,15 @@
+[data-theme="default"] {
+    --primary: #1d1d1d;
+    --secondary: #202020;
+    --tertiary: #303030;  
+
+    --text: #ffffff;    
+}
+
+[data-theme="default-light"] {
+    --primary: #ffffff;
+    --secondary: #f0f0f0;
+    --tertiary: #e0e0e0;  
+    
+    --text: #000000;    
+}
