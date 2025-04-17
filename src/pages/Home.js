@@ -25,11 +25,17 @@ export default function Home() {
 
     useEffect(() => {
         fetchUserData();
-    }, [userId]);
+        if (user) {
+            const header = document.getElementById('welcome-header');
+            if (header) {
+                header.textContent = `Hello, ${user.name}`;
+            }
+        }
+    }, [user]);
 
     return (
         <div className="home">
-            <h1 id='welcome-header'>Hello, <b>{user.name}</b></h1>
+            <h1 id='welcome-header'></h1>
             <img src={fire} alt='fire' id='fire' />
         </div>
     );

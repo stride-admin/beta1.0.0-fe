@@ -12,7 +12,7 @@ import SideMenu from './components/SideMenu';
 import { hb_menu } from './icons/icons';
 
 function App() {
-  const { currentPage, setCurrentPage, authenticated, setAuthenticated } = useAppContext();
+  const { currentPage, setCurrentPage, authenticated, setAuthenticated, user } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
   const [authMode, setAuthMode] = useState('login');
 
@@ -24,7 +24,6 @@ function App() {
     setSideMenuOpen(false);
   };
 
-  // Side menu navigation, including a Log Out option that clears credentials
   const navItems = [
     { name: 'Calendar', onClick: () => console.log('Calendar clicked') },
     { 
@@ -72,7 +71,7 @@ function App() {
       </SideMenu>
 
       {/* Main Content */}
-      {authenticated ? (
+      {(authenticated) ? (
         <>
           {currentPage === 'home' && <Home />}
           {currentPage === 'wallet' && <Wallet />}
