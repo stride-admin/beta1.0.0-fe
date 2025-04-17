@@ -10,12 +10,13 @@ export const AppProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState('home');
 
   const [user, setUser] = useState({});
+  const [wallet, setWallet] = useState(null);
+  const [health, setHealth] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // Check if the user is logged in (credentials stored in localStorage)
   useEffect(() => {
     const storedUserId = localStorage.getItem('user_id');
     const hashedPassword = localStorage.getItem('hashed_password');
@@ -34,7 +35,9 @@ export const AppProvider = ({ children }) => {
     setCurrentPage,
     userId, setUserId,
     authenticated, setAuthenticated,
-    user, setUser
+    user, setUser,
+    wallet, setWallet,
+    health, setHealth
   };
 
   return (

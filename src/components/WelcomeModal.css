@@ -1,0 +1,163 @@
+/* WelcomeModal.css */
+
+/* Ensures the modal is centered in the screen */
+.welcome-modal .modal-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+    position: fixed;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0) !important; /* Masked background */
+    transition: opacity 300ms ease-in-out;
+}
+
+/* Optional: This ensures the modal content fits and has padding */
+.welcome-modal .modal-content {
+    width: 90%;
+    max-width: 500px;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome-modal .modal-overlay.visible {
+    opacity: 1;
+}
+
+.welcome-modal .modal-overlay.hidden {
+    opacity: 0;
+}
+
+.welcome-modal .modal-header {
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Adding a slight blur and opacity for the background */
+.welcome-modal .modal-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0); /* Mask with opacity */
+    z-index: -1; /* Ensures the overlay stays behind the modal */
+}
+
+/* Rest of the content styles for the modal remain the same */
+.welcome-modal .progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.welcome-modal .progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.welcome-modal .progress-dot.active {
+    background-color: #007bff;
+    transform: scale(1.2);
+}
+
+.welcome-modal .progress-dot.completed {
+    background-color: #28a745;
+}
+
+.welcome-modal .modal-body {
+    padding: 24px;
+    background-color: rgba(0, 0, 0);
+    z-index: 1000;
+}
+
+.welcome-modal .modal-header {
+    background-color: rgba(0, 0, 0);
+    opacity: 1;
+}
+
+.welcome-modal .welcome-page,
+.welcome-modal .setup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.welcome-modal h2 {
+    margin-bottom: 16px;
+    /* color: #333; */
+}
+
+.welcome-modal p {
+    margin-bottom: 20px;
+    /* color: #666; */
+}
+
+.welcome-modal .setup-form {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.welcome-modal .form-group {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.welcome-modal label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    /* color: #444; */
+}
+
+.welcome-modal input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.welcome-modal .button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 16px;
+}
+
+.welcome-modal button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.welcome-modal .next-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.welcome-modal .next-button:hover {
+    background-color: #0069d9;
+}
+
+.welcome-modal .back-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.welcome-modal .back-button:hover {
+    background-color: #5a6268;
+}
