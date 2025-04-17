@@ -1,0 +1,21 @@
+.home {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    opacity: 0.8;
+}
+
+#welcome-header { 
+    font-weight: normal;
+    font-size: 1.5rem;
+}
+
+#fire {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 80px;
+}

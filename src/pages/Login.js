@@ -7,7 +7,7 @@ import { useAppContext } from '../AppContext';
 import './Login.css'
 
 function Login() {
-  const { currentPage, setCurrentPage } = useAppContext();
+  const { setCurrentPage, setUserId, setAuthenticated } = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,6 +37,8 @@ function Login() {
       localStorage.setItem('user_id', data.user_id);
       localStorage.setItem('hashed_password', hashedPassword);
 
+      setUserId(data.user_id);
+      setAuthenticated(true)
       setCurrentPage('home');
       console.log('Login successful');
 

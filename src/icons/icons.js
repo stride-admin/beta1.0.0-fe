@@ -8,4 +8,6 @@ import home from './home.png';
 import wallet from './wallet.png';
 import add_icon from './Group 71.png';
 
-export { hb_menu, logo, chatbot, gym, home, wallet, add_icon };
+import fire from './FIRE.png';
+
+export { hb_menu, logo, chatbot, gym, home, wallet, add_icon, fire };

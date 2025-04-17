@@ -12,22 +12,9 @@ import SideMenu from './components/SideMenu';
 import { hb_menu } from './icons/icons';
 
 function App() {
-  const { currentPage, setCurrentPage } = useAppContext();
+  const { currentPage, setCurrentPage, authenticated, setAuthenticated } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
-  const [authenticated, setAuthenticated] = useState(true);
-  // New state to toggle between login and registration forms
   const [authMode, setAuthMode] = useState('login');
-
-  // Check if the user is logged in (credentials stored in localStorage)
-  useEffect(() => {
-    const userId = localStorage.getItem('user_id');
-    const hashedPassword = localStorage.getItem('hashed_password');
-    if (userId && hashedPassword) {
-      setAuthenticated(true);
-    } else {
-      setAuthenticated(false);
-    }
-  }, [currentPage]);
 
   const toggleMenu = () => {
     setSideMenuOpen(prev => !prev);
