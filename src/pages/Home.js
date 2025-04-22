@@ -1,18 +1,62 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { useAppContext } from '../AppContext';
+
 import WelcomeModal from '../components/WelcomeModal'; // Import the WelcomeModal component
+import ProgressBar from '../components/ProgressBar';
 
 import { fire } from '../icons/icons';
 
 import './Home.css';
 
+const CollapsibleSection = ({ title, children }) => {
+    const [isOpen, setIsOpen] = useState(true);
+  
+    const toggleOpen = () => {
+      setIsOpen(!isOpen);
+    };
+  
+    return (
+      <div className="collapsible-section">
+        <div 
+          className="section-header"
+          onClick={toggleOpen}
+        >
+          <h3 className="section-title">{title}</h3>
+          <div className={`section-arrow ${isOpen ? 'open' : ''}`}>
+            <svg 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+        
+        <div className={`section-content ${!isOpen ? 'closed' : ''}`}>
+          {children}
+        </div>
+      </div>
+    );
+  };
+  
+  
+
 export default function Home() {
+    const streak = 12;
+    const spent = 129.33;
     const { 
         userId, 
         user, setUser, 
         wallet, setWallet, 
-        health, setHealth } = useAppContext();
+        health, setHealth 
+    } = useAppContext();
     
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -110,20 +154,46 @@ export default function Home() {
         loadUserData();
     }, [userId]);
 
-    // Close modal handler
     const handleCloseModal = () => {
         setSetupModalOpen(false);
-        // You might want to refetch data here if the user has updated their info
         fetchUserWallet();
         fetchUserHealth();
     };
 
     return (
         <div className="home">
-            <h1 id='welcome-header'>{user ? `Hello, ${user.name}` : ''}</h1>
-            <img src={fire} alt='fire' id='fire' />
+            <div className='home-header'>
+                <h1 id='welcome-header'>{user ? `Hello, ${user.name}` : ''}</h1>
+                <img src={fire} alt='fire' id='fire' />
+                <p id='streak-no'>{streak}</p>
+            </div>
+            <div className='home-content'>
+                <div className='home-finances'>
+                    <div className='home-finances-header'>
+
+                        <div className='home-finances-row'>
+                            <p className='home-finances-row-title'>{wallet ? wallet['balance'] : null}</p>
+                            <p className='home-finances-row-title'>$</p>
+                            <p className='home-finances-row-title'>{spent}</p>
+                        </div>
+                        <div className='home-finances-row'>
+                            <p className='home-finances-row-subtitle'>Balance</p>
+                            <p className='home-finances-row-subtitle'>Spent today</p>
+                        </div>
+                    </div>
+                    <ProgressBar
+                        id="home-finances-progress-bar"
+                        title="Budget spent (W)"
+                        current="2351.92"
+                        max={3000}
+                        color="#2D81FF"
+                    />
+                </div>
+                <CollapsibleSection title={'Health'}></CollapsibleSection>
+                <CollapsibleSection title={'Calendar'}></CollapsibleSection>
+                <CollapsibleSection title={'Todo'}></CollapsibleSection>
+            </div>
             
-            {/* WelcomeModal will only render when needed */}
             {isUserLoaded && (
                 <WelcomeModal
                     wallet={wallet}

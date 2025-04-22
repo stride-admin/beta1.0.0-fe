@@ -16,6 +16,102 @@
 #fire {
     position: absolute;
     top: 20px;
-    right: 20px;
-    height: 70px;
+    right: 25px;
+    height: 80px;
 }
+
+#streak-no {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.home-header {
+    display: flex;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.home-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.home-finances {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+    gap: 10px;
+}
+
+.home-finances-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.home-finances-row-title {
+    font-size: 34px;
+}
+
+.home-finances-row-subtitle {
+    font-size: 16px;
+    opacity: 0.5;
+    font-weight: 100;
+}
+
+.collapsible-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  .container-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+  
+  /* Section styles */
+  .collapsible-section {
+    /* border-radius: 6px; */
+    margin-bottom: 8px;
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .section-title {
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .section-arrow {
+    transform: rotate(0deg);
+    transition: transform 0.2s ease;
+  }
+  
+  .section-arrow.open {
+    transform: rotate(180deg);
+  }
+  
+  .section-content {
+    padding: 5px 0;
+  }
+  
+  .section-content.closed {
+    display: none;
+  }
