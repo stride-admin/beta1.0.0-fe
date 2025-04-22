@@ -1,0 +1,39 @@
+.pie-chart-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .pie-chart-center-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    text-align: center;
+  }
+  
+  .pie-chart-center-content .icon {
+    margin-bottom: 4px;
+    /* font-size: 1.2em; */
+  }
+  
+  .pie-chart-center-content .title {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #4b5563; /* Tailwind gray-700 equivalent */
+  }
+  
+  .pie-chart-center-content .count {
+    margin-top: 4px;
+    font-size: 2em;
+    color: #6b7280; /* Tailwind gray-500 equivalent */
+  }
+  
+  .unit {
+    font-size: 20px;
+  }

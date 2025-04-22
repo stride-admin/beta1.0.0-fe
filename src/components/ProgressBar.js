@@ -38,14 +38,15 @@ const ProgressBar = ({ title, current, max, color }) => {
         height: '10px',
         backgroundColor: '#e0e0e0',
         borderRadius: '9999px',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}>
         <div className="progress-bar-fill" style={{
           width: `${percentage}%`,
           height: '100%',
           backgroundColor: color,
           borderRadius: '9999px',
-          transition: 'width 0.3s ease'
+          transition: 'width 0.3s ease',
+
         }} />
       </div>
     </div>

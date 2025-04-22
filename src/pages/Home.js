@@ -4,6 +4,7 @@ import { useAppContext } from '../AppContext';
 
 import WelcomeModal from '../components/WelcomeModal'; // Import the WelcomeModal component
 import ProgressBar from '../components/ProgressBar';
+import PieChart from '../components/PieChart';
 
 import { fire } from '../icons/icons';
 
@@ -173,7 +174,7 @@ export default function Home() {
 
                         <div className='home-finances-row'>
                             <p className='home-finances-row-title'>{wallet ? wallet['balance'] : null}</p>
-                            <p className='home-finances-row-title'>$</p>
+                            <p className='home-finances-row-title' style={{opacity:0.3, fontWeight: 100}}>$</p>
                             <p className='home-finances-row-title'>{spent}</p>
                         </div>
                         <div className='home-finances-row'>
@@ -189,7 +190,27 @@ export default function Home() {
                         color="#2D81FF"
                     />
                 </div>
-                <CollapsibleSection title={'Health'}></CollapsibleSection>
+                <CollapsibleSection title={'Health'}>
+                    <div className='home-health-content'>
+                        <PieChart 
+                            title="Steps"
+                            // icon="ICON"
+                            current={1922}
+                            max={3000}
+                            color='#FF7C4C'
+                            radius={80}
+                        />
+                        <PieChart 
+                            title="Cardio"
+                            // icon="ICON"
+                            current={51}
+                            max={60}
+                            color='#DB4CFF'
+                            radius={80}
+                            unit="min"
+                        />
+                    </div>
+                </CollapsibleSection>
                 <CollapsibleSection title={'Calendar'}></CollapsibleSection>
                 <CollapsibleSection title={'Todo'}></CollapsibleSection>
             </div>

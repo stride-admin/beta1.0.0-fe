@@ -11,6 +11,8 @@
 #welcome-header { 
     font-weight: normal;
     font-size: 1.5rem;
+    opacity: 0.8;
+    font-weight: 100;
 }
 
 #fire {
@@ -26,6 +28,7 @@
     right: 40px;
     font-size: 24px;
     font-weight: 700;
+    color: var(--primary);
 }
 
 .home-header {
@@ -64,8 +67,14 @@
     font-weight: 100;
 }
 
+.home-health-content {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
 .collapsible-container {
-    max-width: 500px;
+    /* max-width: 500px; */
     margin: 0 auto;
     padding: 16px;
   }
