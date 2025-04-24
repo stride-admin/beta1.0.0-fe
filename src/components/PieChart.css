@@ -25,13 +25,16 @@
   .pie-chart-center-content .title {
     font-size: 1.2em;
     font-weight: 500;
-    color: #4b5563; /* Tailwind gray-700 equivalent */
+    color: #ffffff; 
+    opacity: 0.7;
+    font-weight: 100;
   }
   
   .pie-chart-center-content .count {
     margin-top: 4px;
     font-size: 2em;
-    color: #6b7280; /* Tailwind gray-500 equivalent */
+    color: #ffffff; 
+    font-weight: bold;
   }
   
   .unit {

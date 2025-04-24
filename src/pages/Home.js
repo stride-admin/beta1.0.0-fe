@@ -45,9 +45,7 @@ const CollapsibleSection = ({ title, children }) => {
         </div>
       </div>
     );
-  };
-  
-  
+};
 
 export default function Home() {
     const streak = 12;
@@ -56,9 +54,10 @@ export default function Home() {
         userId, 
         user, setUser, 
         wallet, setWallet, 
-        health, setHealth 
+        health, setHealth,
+        todos, setTodos
     } = useAppContext();
-    
+
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
 
@@ -90,7 +89,7 @@ export default function Home() {
             if (error && error.code !== 'PGRST116') throw error;
             
             if (data) {
-                console.log("Wallet data:", data);
+                // console.log("Wallet data:", data);
                 setWallet(data);
                 return data;
             } else {
@@ -114,7 +113,7 @@ export default function Home() {
             if (error && error.code !== 'PGRST116') throw error;
             
             if (data) {
-                console.log("Health data:", data);
+                // console.log("Health data:", data);
                 setHealth(data);
                 return data;
             } else {
@@ -127,7 +126,26 @@ export default function Home() {
         }
     }
 
-    // Check if user setup is complete and show modal if needed
+    const fetchUserTodos = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('todos')
+                .select("*")
+                .eq('user_id', userId);
+            if (data.length > 0) {
+                setTodos(data);
+                console.log("Todos data:", data);
+                return data
+            } else {
+                console.log('User has no todos');
+                return null;
+            }
+        } catch (err) {
+            console.error("Error fetching todos:", err);
+            return null;
+        }
+    }
+
     const checkUserSetup = (walletData, healthData) => {
         if (!walletData || !healthData) {
             console.log("User isn't fully set up");
@@ -144,11 +162,11 @@ export default function Home() {
                     const walletData = await fetchUserWallet();
                     const healthData = await fetchUserHealth();
                     
-                    // Check if setup is needed after all data is fetched
                     checkUserSetup(walletData, healthData);
                 }
                 
                 setIsUserLoaded(true);
+                fetchUserTodos();
             }
         };
         
@@ -212,7 +230,19 @@ export default function Home() {
                     </div>
                 </CollapsibleSection>
                 <CollapsibleSection title={'Calendar'}></CollapsibleSection>
-                <CollapsibleSection title={'Todo'}></CollapsibleSection>
+                <CollapsibleSection title={'Todo'}>
+                    {todos && todos.length > 0 ? (
+                        todos.map((todo, index) => (
+                            <div key={index} className='todo-item'>
+                                <input type="checkbox" className='todo-checkbox' />
+                                <p className='todo-title'>{todo.title}</p>
+                                <p className='todo-description'>{todo.description}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p style={{opacity: 0.5, padding: 10}}>Nothing to do today! :)</p>
+                    )}
+                </CollapsibleSection>
             </div>
             
             {isUserLoaded && (

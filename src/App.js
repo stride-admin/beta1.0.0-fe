@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import Wallet from './pages/Wallet';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Chatbot from './pages/Chatbot';
+
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
 import { hb_menu } from './icons/icons';
@@ -75,6 +77,7 @@ function App() {
         <>
           {currentPage === 'home' && <Home />}
           {currentPage === 'wallet' && <Wallet />}
+          {currentPage === 'chatbot' && <Chatbot />}
           <Menu />
         </>
       ) : (

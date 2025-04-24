@@ -1,0 +1,114 @@
+/* Form Styles for all custom forms */
+
+.form-container {
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #ffffff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group select {
+    background-color: rgb(42, 42, 42);
+    cursor: pointer;
+    color: white;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+#deadline_date {
+    /* color: white; */
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.form-actions button:active {
+    transform: scale(0.98);
+}
+
+.cancel-btn {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #e1e1e1;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+/* Priority styling */
+select[name="priority"] option[value="low"] {
+    color: #4CAF50;
+}
+
+select[name="priority"] option[value="medium"] {
+    color: #FF9800;
+}
+
+select[name="priority"] option[value="high"] {
+    color: #F44336;
+}
+
+/* Form Modal styling */
+.form-modal {
+    background-color: #313131;
+    /* width: 90%; */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}

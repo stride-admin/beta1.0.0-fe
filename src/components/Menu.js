@@ -3,14 +3,17 @@ import Modal from './Modal'; // Modal component
 import './Menu.css';
 import { useAppContext } from '../AppContext';
 import { chatbot, home, wallet, gym, add_icon } from '../icons/icons'; // Replace with your actual icon paths
-// Example icons for the modal options
-// import { option1, option2, option3, option4, option5 } from '../icons/addModalIcons'; // Create or update this file
+// Import the custom form components
+import TodoForm from '../forms/TodoForm';
+import CalendarForm from '../forms/CalendarForm';
 
 export default function Menu() {
     const { currentPage, setCurrentPage } = useAppContext();
     const [isModalOpen, setModalOpen] = useState(false);
     const [visibleOptions, setVisibleOptions] = useState([]);
     const [isClosing, setIsClosing] = useState(false);
+    // New state to track which form to display
+    const [activeForm, setActiveForm] = useState(null);
 
     const handleMenuClick = (page) => () => {
         setCurrentPage(page);
@@ -51,6 +54,15 @@ export default function Menu() {
     const handleAddOption = (index) => {
         console.log(`Clicked Add Option ${index + 1}`);
         handleCloseModal();
+        
+        // Set the active form based on the selected option
+        const formTypes = ['expense', 'food', 'workout', 'todo', 'event'];
+        setActiveForm(formTypes[index]);
+    };
+
+    // Function to close the active form
+    const closeActiveForm = () => {
+        setActiveForm(null);
     };
 
     // Effect to animate in options one by one
@@ -73,11 +85,30 @@ export default function Menu() {
 
     const addOptions = [
         { icon: 'option1', label: 'Add Expense' },
-        { icon: 'option2', label: 'Add Workout' },
-        { icon: 'option3', label: 'Add Goal' },
-        { icon: 'option4', label: 'Add Task' },
-        { icon: 'option5', label: 'Add Note' },
+        { icon: 'option2', label: 'Add Food' },
+        { icon: 'option3', label: 'Add Workout' },
+        { icon: 'option4', label: 'Add Todo' },
+        { icon: 'option5', label: 'Add Event' },
     ];
+
+    // Render the appropriate form based on activeForm state
+    const renderActiveForm = () => {
+        switch(activeForm) {
+            case 'todo':
+                return <TodoForm onClose={closeActiveForm} />;
+            case 'expense':
+                // You'll create and import these forms later
+                return <div>Expense Form Placeholder</div>;
+            case 'food':
+                return <div>Food Form Placeholder</div>;
+            case 'workout':
+                return <div>Workout Form Placeholder</div>;
+            case 'event':
+                return <CalendarForm onClose={closeActiveForm} />;
+            default:
+                return null;
+        }
+    };
 
     return (
         <>
@@ -113,6 +144,8 @@ export default function Menu() {
                     onClick={handleMenuClick('chatbot')} 
                 />
             </div>
+            
+            {/* Add Options Modal */}
             <Modal 
                 isOpen={isModalOpen} 
                 onClose={handleCloseModal} 
@@ -126,12 +159,24 @@ export default function Menu() {
                             className={`add-modal-option ${visibleOptions.includes(i) ? 'visible' : 'hidden'}`}
                             onClick={() => handleAddOption(i)}
                         >
-                            <img src={option.icon} alt={option.label} />
+                            <img src={option.icon} alt="" />
                             <p>{option.label}</p>
                         </div>
                     ))}
                 </div>
             </Modal>
+
+            {/* Render the active form in its own modal */}
+            {activeForm && (
+                <Modal
+                    isOpen={activeForm !== null}
+                    onClose={closeActiveForm}
+                    className="form-modal"
+                    transitionDuration={300}
+                >
+                    {renderActiveForm()}
+                </Modal>
+            )}
         </>
     );
 }

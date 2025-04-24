@@ -46,11 +46,11 @@ const PieChart = ({
         <div className="icon" style={{ color: color }}>
           {icon}
         </div>
-        <div className="title">
-          {title}
-        </div>
         <div className="count">
           {current}{unit && <span className="unit"> {unit}</span>}
+        </div>
+        <div className="title">
+          {title}
         </div>
       </div>
     </div>
