@@ -48,6 +48,7 @@ const CollapsibleSection = ({ title, children }) => {
 };
 
 export default function Home() {
+    const [completedTodos, setCompletedTodos] = useState({});
     const streak = 12;
     const spent = 129.33;
     const { 
@@ -231,17 +232,38 @@ export default function Home() {
                 </CollapsibleSection>
                 <CollapsibleSection title={'Calendar'}></CollapsibleSection>
                 <CollapsibleSection title={'Todo'}>
-                    {todos && todos.length > 0 ? (
-                        todos.map((todo, index) => (
+                {todos && todos.length > 0 ? (
+                    todos.map((todo, index) => {
+                        const isCompleted = completedTodos[index] || false;
+
+                        const handleToggle = () => {
+                            setCompletedTodos(prev => ({
+                                ...prev,
+                                [index]: !isCompleted
+                            }));
+                        };
+
+                        return (
                             <div key={index} className='todo-item'>
-                                <input type="checkbox" className='todo-checkbox' />
-                                <p className='todo-title'>{todo.title}</p>
-                                <p className='todo-description'>{todo.description}</p>
+                                <div 
+                                    className={`custom-checkbox ${isCompleted ? 'checked' : ''}`}
+                                    onClick={handleToggle}
+                                />
+                                <div className="todo-texts">
+                                    <p className={`todo-title ${isCompleted ? 'completed' : ''}`}>
+                                        {todo.title}
+                                    </p>
+                                    <p className={`todo-description ${isCompleted ? 'completed' : ''}`}>
+                                        {todo.description}
+                                    </p>
+                                </div>
                             </div>
-                        ))
-                    ) : (
-                        <p style={{opacity: 0.5, padding: 10}}>Nothing to do today! :)</p>
-                    )}
+                        );
+                    })
+                ) : (
+                    <p style={{opacity: 0.5, padding: 10}}>Nothing to do today! :)</p>
+                )}
+
                 </CollapsibleSection>
             </div>
             

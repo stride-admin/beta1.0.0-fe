@@ -124,3 +124,39 @@
   .section-content.closed {
     display: none;
   }
+
+  .todo-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.custom-checkbox {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox.checked {
+    background-color: #2D81FF; /* nice blue */
+    border-color: #2D81FF;
+}
+
+.todo-texts {
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-title, .todo-description {
+    margin: 0;
+    transition: all 0.2s ease;
+}
+
+.todo-title.completed, .todo-description.completed {
+    color: grey;
+    text-decoration: line-through;
+}
