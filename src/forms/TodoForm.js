@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { supabase } from '../utils/supabaseClient';
+import { useTodos } from '../hooks/useTodos'; // useTodos instead of direct supabase
 import { useAppContext } from '../AppContext';
 
 import './FormStyles.css';
 
 export default function TodoForm({ onClose }) {
-    const { 
-        userId, setTodos
-    } = useAppContext();
+    const { userId } = useAppContext();
+    const { addTodo } = useTodos(); // <-- use addTodo from the hook
 
     const [todoData, setTodoData] = useState({
         user_id: userId,
@@ -29,22 +28,22 @@ export default function TodoForm({ onClose }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
         console.log('Submitting todo:', todoData);
 
         try {
-            const { data, error } = await supabase
-                .from('todos')
-                .insert(todoData)
-                .select();
-
-            setTodos(prev => [...prev, ...data]);
-
+            const result = await addTodo(todoData);
+            if (result.success) {
+                console.log('Todo added successfully');
+            } else {
+                console.error('Failed to add todo');
+            }
         } catch (err) {
             console.error("Error inserting todo:", err);
         }
-        
+
+        // Reset form
         setTodoData({
+            user_id: userId,
             title: '',
             description: '',
             recurrent: false,
@@ -52,6 +51,7 @@ export default function TodoForm({ onClose }) {
             deadline_date: '',
             recurrent_date: ''
         });
+
         onClose();
     };
 

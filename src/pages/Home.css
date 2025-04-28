@@ -129,7 +129,7 @@
     margin-bottom: 10px;
     position: relative;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     padding: 12px 30px 12px 12px; /* Add more padding on the right for the delete button */
 }
 
@@ -156,6 +156,15 @@
 .todo-title, .todo-description {
     margin: 0;
     transition: all 0.2s ease;
+}
+
+.todo-title {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.todo-description {
+  opacity: .3;
 }
 
 .todo-title.completed, .todo-description.completed {
