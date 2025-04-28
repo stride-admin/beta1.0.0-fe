@@ -147,6 +147,21 @@ export default function Home() {
         }
     }
 
+    const delTodo = async (taskId) => {
+        try {
+            const response = await supabase
+                .from('todos')
+                .delete()
+                .eq('task_id', taskId);
+                
+            console.log("Todo deleted:", response);
+            
+            setTodos(currentTodos => currentTodos.filter(todo => todo.task_id !== taskId));
+        } catch (err) {
+            console.error("Error deleting todo:", err);
+        }
+    }
+
     const checkUserSetup = (walletData, healthData) => {
         if (!walletData || !healthData) {
             console.log("User isn't fully set up");
@@ -230,7 +245,15 @@ export default function Home() {
                         />
                     </div>
                 </CollapsibleSection>
-                <CollapsibleSection title={'Calendar'}></CollapsibleSection>
+                <CollapsibleSection title={'Calendar'}>
+                    <div className='calendar-content'>
+                        <div className='calendar-timeframe-selector'>
+                            <div className='calendar-timeframe-selector-item selected'>Today</div>
+                            <div className='calendar-timeframe-selector-item'>Week</div>
+                            <div className='calendar-timeframe-selector-item'>Month</div>
+                        </div>
+                    </div>
+                </CollapsibleSection>
                 <CollapsibleSection title={'Todo'}>
                 {todos && todos.length > 0 ? (
                     todos.map((todo, index) => {
@@ -244,7 +267,7 @@ export default function Home() {
                         };
 
                         return (
-                            <div key={index} className='todo-item'>
+                            <div id={todo.task_id} className='todo-item' key={todo.task_id}>
                                 <div 
                                     className={`custom-checkbox ${isCompleted ? 'checked' : ''}`}
                                     onClick={handleToggle}
@@ -256,6 +279,13 @@ export default function Home() {
                                     <p className={`todo-description ${isCompleted ? 'completed' : ''}`}>
                                         {todo.description}
                                     </p>
+                                </div>
+                                <div 
+                                    className="delete-todo"
+                                    onClick={() => delTodo(todo.task_id)}
+                                >
+                                    {console.log(todo)}
+                                    ✕
                                 </div>
                             </div>
                         );

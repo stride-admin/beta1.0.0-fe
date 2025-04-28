@@ -30,20 +30,20 @@ export default function TodoForm({ onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Here you would normally send the data to your backend or state management
         console.log('Submitting todo:', todoData);
 
         try {
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('todos')
-                .insert(todoData);
+                .insert(todoData)
+                .select();
+
+            setTodos(prev => [...prev, ...data]);
+
         } catch (err) {
             console.error("Error inserting todo:", err);
         }
-
-        // You can add validation here before submission
         
-        // Clear form and close
         setTodoData({
             title: '',
             description: '',
@@ -52,8 +52,6 @@ export default function TodoForm({ onClose }) {
             deadline_date: '',
             recurrent_date: ''
         });
-        
-        // Close the form modal
         onClose();
     };
 
