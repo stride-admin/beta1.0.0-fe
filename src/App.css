@@ -16,6 +16,7 @@
   flex-direction: column;
   padding: 20px;
   align-items: center;
+  overflow: scroll;
 }
 
 .App-header {

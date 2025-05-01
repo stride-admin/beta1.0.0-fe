@@ -1,222 +1,314 @@
 .home {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    align-items: start;
-    padding: 10px;
-    opacity: 0.8;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: start;
+  padding: 10px;
+  opacity: 0.8;
+  /* padding-bottom: 100px; */
 }
 
 #welcome-header { 
-    font-weight: normal;
-    font-size: 1.5rem;
-    opacity: 0.8;
-    font-weight: 100;
+  font-weight: normal;
+  font-size: 1.5rem;
+  opacity: 0.8;
+  font-weight: 100;
 }
 
 #fire {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    height: 80px;
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  height: 80px;
 }
 
 #streak-no {
-    position: absolute;
-    top: 60px;
-    right: 40px;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary);
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
 }
 
 .home-header {
-    display: flex;
-    padding-bottom: 5px;
-    width: 100%;
+  display: flex;
+  padding-bottom: 5px;
+  width: 100%;
 }
 
 .home-content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 100px;
 }
 
 .home-finances {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+  gap: 10px;
 }
 
 .home-finances-row {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .home-finances-row-title {
-    font-size: 34px;
+  font-size: 34px;
 }
 
 .home-finances-row-subtitle {
-    font-size: 16px;
-    opacity: 0.5;
-    font-weight: 100;
+  font-size: 16px;
+  opacity: 0.5;
+  font-weight: 100;
 }
 
 .home-health-content {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
 }
 
 .collapsible-container {
-    /* max-width: 500px; */
-    margin: 0 auto;
-    padding: 16px;
-  }
-  
-  .container-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  /* Section styles */
-  .collapsible-section {
-    /* border-radius: 6px; */
-    margin-bottom: 8px;
-    overflow: hidden;
-    width: 100%;
-    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
-  }
-  
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    cursor: pointer;
-    user-select: none;
-  }
-  
-  .section-title {
-    font-weight: 500;
-    margin: 0;
-  }
-  
-  .section-arrow {
-    transform: rotate(0deg);
-    transition: transform 0.2s ease;
-  }
-  
-  .section-arrow.open {
-    transform: rotate(180deg);
-  }
-  
-  .section-content {
-    padding: 5px 0;
-  }
-  
-  .section-content.closed {
-    display: none;
-  }
+  /* max-width: 500px; */
+  margin: 0 auto;
+  padding: 16px;
+}
 
-  .todo-item {
-    margin-bottom: 10px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 12px 30px 12px 12px; /* Add more padding on the right for the delete button */
+.container-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* Section styles */
+.collapsible-section {
+  /* border-radius: 6px; */
+  margin-bottom: 8px;
+  overflow: hidden;
+  width: 100%;
+  border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-title {
+  font-weight: 500;
+  margin: 0;
+}
+
+.section-arrow {
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.section-arrow.open {
+  transform: rotate(180deg);
+}
+
+.section-content {
+  padding: 5px 0;
+}
+
+.section-content.closed {
+  display: none;
+}
+
+.todo-item {
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 12px 30px 12px 12px; /* Add more padding on the right for the delete button */
 }
 
 .custom-checkbox {
-    width: 30px;
-    height: 30px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: all 0.2s ease;
-}
-
-.custom-checkbox.checked {
-    background-color: #2D81FF; /* nice blue */
-    border-color: #2D81FF;
-}
-
-.todo-texts {
-    display: flex;
-    flex-direction: column;
-}
-
-.todo-title, .todo-description {
-    margin: 0;
-    transition: all 0.2s ease;
-}
-
-.todo-title {
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.todo-description {
-  opacity: .3;
-}
-
-.todo-title.completed, .todo-description.completed {
-    color: grey;
-    text-decoration: line-through;
-}
-
-/* Add these styles to your Home.css file */
-
-.delete-todo {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  color: #999;
-  opacity: 0.7;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+  margin-right: 10px;
   transition: all 0.2s ease;
 }
 
+.custom-checkbox.checked {
+  background-color: #2D81FF; /* nice blue */
+  border-color: #2D81FF;
+}
+
+.todo-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-title, .todo-description {
+  margin: 0;
+  transition: all 0.2s ease;
+}
+
+.todo-title {
+font-weight: bold;
+font-size: 20px;
+}
+
+.todo-description {
+opacity: .3;
+}
+
+.todo-title.completed, .todo-description.completed {
+  color: grey;
+  text-decoration: line-through;
+}
+
+/* Delete todo button */
+.delete-todo {
+position: absolute;
+right: 10px;
+top: 50%;
+transform: translateY(-50%);
+cursor: pointer;
+font-size: 14px;
+color: #999;
+opacity: 0.7;
+width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+transition: all 0.2s ease;
+}
+
 .delete-todo:hover {
-  background-color: rgba(255, 0, 0, 0.1);
-  color: #ff3b30;
-  opacity: 1;
+background-color: rgba(255, 0, 0, 0.1);
+color: #ff3b30;
+opacity: 1;
 }
 
 .calendar-timeframe-selector {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
+display: flex;
+justify-content: space-between;
+padding: 0 20px;
 }
 
 .calendar-timeframe-selector-item {
-  font-size: 16px;
-  opacity: 0.3;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+font-size: 16px;
+opacity: 0.3;
+cursor: pointer;
+transition: all 0.2s ease-in-out;
 }
 
 .calendar-timeframe-selector-item.selected {
-  opacity: 1 !important;
-  font-weight: 500;
+opacity: 1 !important;
+font-weight: 500;
 }
 
 .calendar-timeframe-selector-item:hover {
-  opacity: 0.7;
-  scale: 1.05;
+opacity: 0.7;
+scale: 1.05;
+}
+
+.calendar-items {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+/* New swipeable calendar styles */
+.calendar-item-container {
+position: relative;
+overflow: hidden;
+border-radius: 10px;
+margin-bottom: 5px;
+}
+
+.calendar-item-swipeable {
+position: relative;
+width: 100%;
+transform: translateX(0);
+transition: transform 0.3s ease;
+touch-action: pan-x;
+z-index: 1;
+}
+
+.calendar-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #4a4a4a;
+padding: 10px;
+border-radius: 10px;
+width: 100%;
+z-index: 1;
+}
+
+.delete-btn {
+position: absolute;
+right: 0;
+top: 0;
+height: 100%;
+width: 100px;
+background-color: #ff3b30;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-weight: bold;
+z-index: 0;
+border-radius: 0 10px 10px 0;
+transform: translateX(100%);
+transition: transform 0.3s ease;
+}
+
+.delete-btn.visible {
+transform: translateX(0);
+}
+
+.delete-btn-text {
+margin-right: 15px;
+}
+
+.calendar-item-title {
+font-size: 20px;
+font-weight: 500;
+color: white;
+margin: 0;
+}
+
+.calendar-item-description {
+font-size: 14px;
+color: white;
+opacity: 0.7;
+margin: 0;
+}
+
+.calendar-item-datetime {
+display: flex;
+flex-direction: column;
+align-items: end;
+}
+
+.calendar-item-time {
+font-size: 20px;
+color: white;
+font-weight: 500;
+}
+
+.calendar-item-date {
+font-size: 12px;
+color: white;
+opacity: 0.7;
 }

@@ -6,7 +6,7 @@ import './FormStyles.css';
 
 export default function TodoForm({ onClose }) {
     const { userId } = useAppContext();
-    const { addTodo } = useTodos(); // <-- use addTodo from the hook
+    const { addTodo } = useTodos();
 
     const [todoData, setTodoData] = useState({
         user_id: userId,

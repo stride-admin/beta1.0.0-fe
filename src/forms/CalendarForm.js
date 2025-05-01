@@ -1,13 +1,21 @@
 import { useState } from 'react';
+import { useCalendar } from '../hooks/useCalendar';
+import { useAppContext } from '../AppContext';
+
 import './FormStyles.css';
 
 export default function CalendarForm({ onClose }) {
+    const { userId } = useAppContext();
+    const { addEvent } = useCalendar();
+
+    const defaultEventDate = new Date().toISOString().slice(0, 16);
     const [eventData, setEventData] = useState({
+        user_id: userId,
         title: '',
         description: '',
-        event_date: '',
+        event_date: defaultEventDate, // Default to now
         recurrent: false,
-        recurrent_date: ''
+        recurrent_date: null
     });
 
     const handleChange = (e) => {
@@ -18,24 +26,31 @@ export default function CalendarForm({ onClose }) {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Here you would normally send the data to your backend or state management
         console.log('Submitting event:', eventData);
-        
-        // You can add validation here before submission
-        
-        // Clear form and close
+
+        try {
+            const result = await addEvent(eventData);
+            if (result.success) {
+                console.log('Event added successfully');
+            } else {
+                console.error('Failed to add event');
+            }
+        } catch (err) {
+            console.error("Error inserting event:", err);
+        }
+
+        // Reset form
         setEventData({
+            user_id: userId,
             title: '',
             description: '',
-            event_date: '',
+            event_date: defaultEventDate,
             recurrent: false,
-            recurrent_date: ''
+            recurrent_date: null
         });
-        
-        // Close the form modal
+
         onClose();
     };
 

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAppContext } from '../AppContext';
 import './Home.css';
 
-import WelcomeModal from '../components/WelcomeModal'; // Import the WelcomeModal component
+import WelcomeModal from '../components/WelcomeModal';
 import ProgressBar from '../components/ProgressBar';
 import PieChart from '../components/PieChart';
 import CollapsibleSection from '../components/CollapsibleSection';
 
 import { useTodos } from '../hooks/useTodos';
+import { useCalendar } from '../hooks/useCalendar';
 
 import { fire } from '../icons/icons';
 
@@ -25,10 +26,14 @@ export default function Home() {
         health, setHealth
     } = useAppContext();
 
-    const { todos, deleteTodo } = useTodos(); // <-- using the hook here
+    const { todos, deleteTodo } = useTodos();
+    const { calendar, deleteEvent } = useCalendar();
 
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
+    
+    // Track active swipeable item
+    const [activeSwipeId, setActiveSwipeId] = useState(null);
 
     const fetchUserData = async () => {
         try {
@@ -118,10 +123,91 @@ export default function Home() {
         loadUserData();
     }, [userId]);
 
+    // Close any open swipe when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (activeSwipeId && !event.target.closest(`.calendar-item-swipeable[data-id="${activeSwipeId}"]`)) {
+                setActiveSwipeId(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [activeSwipeId]);
+
     const handleCloseModal = () => {
         setSetupModalOpen(false);
         fetchUserWallet();
         fetchUserHealth();
+    };
+
+    // Handle swipe gesture
+    const handleTouchStart = (eventId) => {
+        return (e) => {
+            const touch = e.touches[0];
+            const swipeItem = e.currentTarget;
+            
+            // Set current position
+            swipeItem.dataset.startX = touch.clientX;
+            swipeItem.dataset.currentX = touch.clientX;
+        };
+    };
+
+    const handleTouchMove = (eventId) => {
+        return (e) => {
+            const touch = e.touches[0];
+            const swipeItem = e.currentTarget;
+            
+            const startX = parseInt(swipeItem.dataset.startX);
+            const currentX = touch.clientX;
+            swipeItem.dataset.currentX = currentX;
+            
+            let diff = currentX - startX;
+            
+            // Only allow left swipe (negative diff)
+            if (diff > 0) diff = 0;
+            
+            // Limit the swipe distance
+            if (diff < -100) diff = -100;
+            
+            // Apply the transform
+            swipeItem.style.transform = `translateX(${diff}px)`;
+            
+            // Show delete button when swiped enough
+            if (diff < -50) {
+                setActiveSwipeId(eventId);
+            }
+        };
+    };
+
+    const handleTouchEnd = (eventId) => {
+        return (e) => {
+            const swipeItem = e.currentTarget;
+            const startX = parseInt(swipeItem.dataset.startX);
+            const endX = parseInt(swipeItem.dataset.currentX);
+            const diff = endX - startX;
+            
+            // If swiped far enough, keep it open
+            if (diff < -50) {
+                swipeItem.style.transform = 'translateX(-100px)';
+                setActiveSwipeId(eventId);
+            } else {
+                // Not swiped far enough, snap back
+                swipeItem.style.transform = 'translateX(0)';
+                setActiveSwipeId(null);
+            }
+        };
+    };
+
+    // Reset swipe state
+    const resetSwipe = (eventId) => {
+        const swipeItem = document.querySelector(`.calendar-item-swipeable[data-id="${eventId}"]`);
+        if (swipeItem) {
+            swipeItem.style.transform = 'translateX(0)';
+            setActiveSwipeId(null);
+        }
     };
 
     return (
@@ -175,12 +261,49 @@ export default function Home() {
                 </CollapsibleSection>
 
                 <CollapsibleSection title={'Calendar'}>
-                    <div className='calendar-content'>
-                        <div className='calendar-timeframe-selector'>
-                            <div className='calendar-timeframe-selector-item selected'>Today</div>
-                            <div className='calendar-timeframe-selector-item'>Week</div>
-                            <div className='calendar-timeframe-selector-item'>Month</div>
-                        </div>
+                    <div className='calendar-items'>
+                        {calendar && calendar.length > 0 ? (
+                            calendar.map((event) => (
+                                <div 
+                                    key={event.event_id}
+                                    className="calendar-item-container"
+                                >
+                                    <div 
+                                        className="calendar-item-swipeable"
+                                        data-id={event.event_id}
+                                        onTouchStart={handleTouchStart(event.event_id)}
+                                        onTouchMove={handleTouchMove(event.event_id)}
+                                        onTouchEnd={handleTouchEnd(event.event_id)}
+                                    >
+                                        <div className='calendar-item'>
+                                            <div className="calendar-item-texts">
+                                                <p className="calendar-item-title">{event.title}</p>
+                                                <p className="calendar-item-description">{event.description}</p>
+                                            </div>
+                                            <div className='calendar-item-datetime'>
+                                                <div className="calendar-item-time">
+                                                    {event.event_date.split('T')[1].split(':').slice(0, 2).join(':')}
+                                                </div>
+                                                <div className="calendar-item-date">
+                                                    {event.event_date.split('T')[0].split('-').reverse().join('/')}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div 
+                                        className={`delete-btn ${activeSwipeId === event.event_id ? 'visible' : ''}`}
+                                        onClick={() => {
+                                            deleteEvent(event.event_id);
+                                            resetSwipe(event.event_id);
+                                        }}
+                                    >
+                                        <span className="delete-btn-text">Delete</span>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p style={{ opacity: 0.5, padding: 10 }}>No events today! :)</p>
+                        )}
                     </div>
                 </CollapsibleSection>
 

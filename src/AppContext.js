@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [wallet, setWallet] = useState(null);
   const [health, setHealth] = useState(null);
   const [todos, setTodos] = useState(null);
+  const [calendar, setCalendar] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -39,7 +40,8 @@ export const AppProvider = ({ children }) => {
     user, setUser,
     wallet, setWallet,
     health, setHealth,
-    todos, setTodos
+    todos, setTodos,
+    calendar, setCalendar
   };
 
   return (
