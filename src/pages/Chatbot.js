@@ -1,22 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
-import { InferenceClient } from '@huggingface/inference';
 import { useAppContext } from '../AppContext';
+import { Mistral } from '@mistralai/mistralai';
 
 import './Chatbot.css';
 
-// Initialize Hugging Face Inference Client
-const hf = new InferenceClient('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');
+const apiKey = 'h5ikHydVrSNrAhCn5WXlw1zNBiwNJsUz';
+const agentId = 'ag:c3566615:20250501:stride:ac10bea8';
+
+const client = new Mistral({ apiKey: apiKey });
 
 export default function Chatbot() {
     const { user } = useAppContext();
     const [messages, setMessages] = useState([
-        { role: "bot", content: `Hello ${user.name}! How can I help you today?` },
+        { role: "assistant", content: `Hello ${user.name}! How can I help you today?` },
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef(null);
 
-    // Scroll to bottom when new messages arrive
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -35,30 +36,27 @@ export default function Chatbot() {
         setLoading(true);
 
         try {
-            const chatHistory = messages.map(msg => ({
+            const chatHistory = [...messages, userMessage].map(msg => ({
                 role: msg.role,
                 content: msg.content,
             }));
+            console.log(apiKey)
 
-            // Include the new user message in the context
-            chatHistory.push({ role: "user", content: input });
-
-            const out = await hf.chatCompletion({
-                provider: "sambanova",
-                model: "meta-llama/Llama-3.3-70B-Instruct",
+            const response = await client.agents.complete({
+                agentId: agentId,
                 messages: chatHistory,
-                max_tokens: 512,
-                temperature: 0.3,
             });
 
+            const botReply = response.choices?.[0]?.message?.content || "No response from model.";
+
             const botMessage = {
-                role: "bot",
-                content: out.choices?.[0]?.message?.content || "No response from model.",
+                role: "assistant",
+                content: botReply,
             };
 
             setMessages(prevMessages => [...prevMessages, botMessage]);
         } catch (error) {
-            console.error('Error calling Hugging Face API:', error);
+            console.error('Error calling Mistral API:', error);
             const errorMessage = {
                 role: "bot",
                 content: "Oops! Something went wrong contacting the model.",

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@huggingface/inference": "^3.9.2",
+    "@mistralai/mistralai": "^1.6.0",
     "@supabase/supabase-js": "^2.49.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
