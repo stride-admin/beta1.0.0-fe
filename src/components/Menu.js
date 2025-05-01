@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import Modal from './Modal'; // Modal component
+import Modal from './Modal';
 import './Menu.css';
 import { useAppContext } from '../AppContext';
-import { chatbot, home, wallet, gym, add_icon } from '../icons/icons'; // Replace with your actual icon paths
-// Import the custom form components
-import TodoForm from '../forms/TodoForm';
+
+import { 
+    chatbot, home, wallet, gym, add_icon,
+    dollar, food, event, muscle, todo
+ } from '../icons/icons';
+
+ import TodoForm from '../forms/TodoForm';
 import CalendarForm from '../forms/CalendarForm';
 
 export default function Menu() {
@@ -84,11 +88,11 @@ export default function Menu() {
     }, [isModalOpen, isClosing]);
 
     const addOptions = [
-        { icon: 'option1', label: 'Add Expense' },
-        { icon: 'option2', label: 'Add Food' },
-        { icon: 'option3', label: 'Add Workout' },
-        { icon: 'option4', label: 'Add Todo' },
-        { icon: 'option5', label: 'Add Event' },
+        { icon: dollar, label: 'Add Expense' },
+        { icon: food, label: 'Add Food' },
+        { icon: muscle, label: 'Add Workout' },
+        { icon: todo, label: 'Add Todo' },
+        { icon: event, label: 'Add Event' },
     ];
 
     // Render the appropriate form based on activeForm state
