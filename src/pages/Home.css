@@ -160,12 +160,12 @@
 }
 
 .todo-title {
-font-weight: bold;
-font-size: 20px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .todo-description {
-opacity: .3;
+  opacity: .3;
 }
 
 .todo-title.completed, .todo-description.completed {
@@ -175,21 +175,21 @@ opacity: .3;
 
 /* Delete todo button */
 .delete-todo {
-position: absolute;
-right: 10px;
-top: 50%;
-transform: translateY(-50%);
-cursor: pointer;
-font-size: 14px;
-color: #999;
-opacity: 0.7;
-width: 20px;
-height: 20px;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 50%;
-transition: all 0.2s ease;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  opacity: 0.7;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .delete-todo:hover {

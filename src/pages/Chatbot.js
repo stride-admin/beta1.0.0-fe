@@ -85,7 +85,9 @@ export default function Chatbot() {
                         </div>
                     ))}
                     {loading && (
-                        <div className="message bot-message">
+                        <div className="message bot-message" style={{
+                            opacity: 0.5
+                        }}>
                             Thinking...
                         </div>
                     )}

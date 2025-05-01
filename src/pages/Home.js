@@ -232,13 +232,15 @@ export default function Home() {
                         </div>
                     </div>
                     {console.log(wallet)}
-                    <ProgressBar
-                        id="home-finances-progress-bar"
-                        title="Budget remaining"
-                        current={spent}
-                        max={wallet.daily_budget}
-                        color="#2D81FF"
-                    />
+                    {wallet ? (
+                        <ProgressBar
+                            id="home-finances-progress-bar"
+                            title="Budget remaining"
+                            current={spent}
+                            max={900}
+                            color="#2D81FF"
+                        />
+                    ) : null}
                 </div>
 
                 <CollapsibleSection title={'Health'}>
