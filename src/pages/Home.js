@@ -17,7 +17,7 @@ import { supabase } from '../utils/supabaseClient';
 export default function Home() {
     const [completedTodos, setCompletedTodos] = useState({});
     const streak = 12;
-    const spent = 129.33;
+    const spent = 629.33;
 
     const { 
         userId, 
@@ -231,11 +231,12 @@ export default function Home() {
                             <p className='home-finances-row-subtitle'>Spent today</p>
                         </div>
                     </div>
+                    {console.log(wallet)}
                     <ProgressBar
                         id="home-finances-progress-bar"
-                        title="Budget spent (W)"
-                        current="2351.92"
-                        max={3000}
+                        title="Budget remaining"
+                        current={spent}
+                        max={wallet.daily_budget}
                         color="#2D81FF"
                     />
                 </div>

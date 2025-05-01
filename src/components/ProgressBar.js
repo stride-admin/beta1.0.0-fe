@@ -23,14 +23,14 @@ const ProgressBar = ({ title, current, max, color }) => {
         }}>
           {title}
         </span>
-        <span className="progress-value" style={{
+        {/* <span className="progress-value" style={{
           fontSize: '12px',
           fontWeight: '100',
           color: 'white',
           opacity: 0.7
         }}>
           {current}
-        </span>
+        </span> */}
       </div>
       
       {/* The actual progress bar */}

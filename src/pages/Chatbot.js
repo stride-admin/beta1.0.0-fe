@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAppContext } from '../AppContext';
 import { Mistral } from '@mistralai/mistralai';
+import ReactMarkdown from 'react-markdown';
 
 import './Chatbot.css';
 
@@ -76,7 +77,11 @@ export default function Chatbot() {
                             key={index} 
                             className={`message ${message.role === "user" ? "user-message" : "bot-message"}`}
                         >
-                            {message.content}
+                            {message.role === "assistant" ? (
+                                <ReactMarkdown>{message.content}</ReactMarkdown>
+                            ) : (
+                                message.content
+                            )}
                         </div>
                     ))}
                     {loading && (
