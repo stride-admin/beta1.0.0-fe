@@ -10,10 +10,13 @@ export const AppProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState('home');
 
   const [user, setUser] = useState({});
-  const [wallet, setWallet] = useState(null);
   const [health, setHealth] = useState(null);
   const [todos, setTodos] = useState(null);
   const [calendar, setCalendar] = useState(null);
+  
+  const [wallet, setWallet] = useState(null);
+  const [debits, setDebits] = useState(null);
+  const [credits, setCredits] = useState(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -41,7 +44,9 @@ export const AppProvider = ({ children }) => {
     wallet, setWallet,
     health, setHealth,
     todos, setTodos,
-    calendar, setCalendar
+    calendar, setCalendar,
+    debits, setDebits,
+    credits, setCredits
   };
 
   return (

@@ -9,25 +9,30 @@ import CollapsibleSection from '../components/CollapsibleSection';
 
 import { useTodos } from '../hooks/useTodos';
 import { useCalendar } from '../hooks/useCalendar';
+import { useWallet } from '../hooks/useWallet';
 
 import { fire } from '../icons/icons';
 
 import { supabase } from '../utils/supabaseClient';
+import { DiscAlbum } from 'lucide-react';
 
 export default function Home() {
     const [completedTodos, setCompletedTodos] = useState({});
     const streak = 12;
-    const spent = 629.33;
 
     const { 
         userId, 
         user, setUser, 
-        wallet, setWallet, 
         health, setHealth
     } = useAppContext();
 
     const { todos, deleteTodo } = useTodos();
     const { calendar, deleteEvent } = useCalendar();
+
+    const { wallet, fetchWallet, getBalance, getSpentToday, getDailyBudget } = useWallet();
+    const balance = getBalance() || 0;
+    const spentToday = getSpentToday() || 0;
+    const budgetMax = wallet?.daily_budget || 0;
 
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -48,29 +53,6 @@ export default function Home() {
             return data;
         } catch (err) {
             console.error("Error fetching user data:", err);
-            return null;
-        }
-    };
-
-    const fetchUserWallet = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('user_wallet')
-                .select("*")
-                .eq('user_id', userId)
-                .single();
-
-            if (error && error.code !== 'PGRST116') throw error;
-
-            if (data) {
-                setWallet(data);
-                return data;
-            } else {
-                console.log('User has no wallet');
-                return null;
-            }
-        } catch (err) {
-            console.error("Error fetching wallet:", err);
             return null;
         }
     };
@@ -98,28 +80,30 @@ export default function Home() {
         }
     };
 
-    const checkUserSetup = (walletData, healthData) => {
+    const checkUserSetup = async () => {
+        // Get the latest data to check
+        const walletData = await fetchWallet();
+        const healthData = await fetchUserHealth();
+        
         if (!walletData || !healthData) {
             console.log("User isn't fully set up");
             setSetupModalOpen(true);
         }
     };
-
+    
     useEffect(() => {
         const loadUserData = async () => {
             if (userId) {
                 const userData = await fetchUserData();
-
+    
                 if (userData) {
-                    const walletData = await fetchUserWallet();
-                    const healthData = await fetchUserHealth();
-                    checkUserSetup(walletData, healthData);
+                    await checkUserSetup(); // This now handles fetching both wallet and health
                 }
-
+    
                 setIsUserLoaded(true);
             }
         };
-
+    
         loadUserData();
     }, [userId]);
 
@@ -139,7 +123,7 @@ export default function Home() {
 
     const handleCloseModal = () => {
         setSetupModalOpen(false);
-        fetchUserWallet();
+        fetchWallet();
         fetchUserHealth();
     };
 
@@ -222,22 +206,21 @@ export default function Home() {
                 <div className='home-finances'>
                     <div className='home-finances-header'>
                         <div className='home-finances-row'>
-                            <p className='home-finances-row-title'>{wallet ? wallet['balance'] : null}</p>
+                            <p className='home-finances-row-title'>{parseFloat(balance)}</p>
                             <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>$</p>
-                            <p className='home-finances-row-title'>{spent}</p>
+                            <p className='home-finances-row-title'>{parseFloat  (spentToday)}</p>
                         </div>
                         <div className='home-finances-row'>
                             <p className='home-finances-row-subtitle'>Balance</p>
                             <p className='home-finances-row-subtitle'>Spent today</p>
                         </div>
                     </div>
-                    {console.log(wallet)}
                     {wallet ? (
                         <ProgressBar
                             id="home-finances-progress-bar"
                             title="Budget remaining"
-                            current={spent}
-                            max={900}
+                            current={spentToday}
+                            max={budgetMax}
                             color="#2D81FF"
                         />
                     ) : null}

@@ -1,0 +1,127 @@
+.finances {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 30px;
+    overflow-y: scroll;
+}
+
+.finances-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.finances-row-title {
+    font-size: 34px;
+}
+
+.finances-row-subtitle {
+    font-size: 16px;
+    opacity: 0.5;
+    font-weight: 100;
+}
+  
+.finances-pies {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.finances-table {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+}
+
+.finances-table-header {
+    display: flex;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.40);
+    align-items: end;
+    padding-right: 10px;
+    justify-content: space-between;
+}
+
+.finances-table-header-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: 500;
+    opacity: 0.5;
+}
+
+.finances-table-header-subtitle {
+    font-size: 14px;
+    padding-bottom: 10px;
+    font-weight: 300;
+    opacity: 0.3;
+}
+
+.finances-table-expense {
+    display: flex;
+    min-height: 30px;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Swipeable styles */
+.expense-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+}
+
+.expense-swipeable {
+    width: 100%;
+    transition: transform 0.3s ease;
+    display: flex;
+    touch-action: pan-y;
+}
+
+.even-row {
+    background-color: transparent;
+}
+
+.odd-row {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.delete-expense-btn {
+    position: absolute;
+    right: -100px;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    background-color: #ff4d4f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: right 0.3s ease;
+}
+
+.delete-expense-btn.visible {
+    right: 0;
+}
+
+.finances-table-expense-title {
+    font-weight: 500;
+    flex: 2;
+}
+
+.finances-table-expense-category {
+    flex: 1;
+    opacity: 0.6;
+    text-align: center;
+}
+
+.finances-table-expense-amount {
+    flex: 1;
+    text-align: right;
+}
+
+.delete-btn-text {
+    font-size: 14px;
+}

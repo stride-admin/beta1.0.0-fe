@@ -3,7 +3,8 @@
     --secondary: #202020;
     --tertiary: #303030;  
 
-    --text: #ffffff;    
+    --text: #ffffff;
+    --menu-bg: #303030;
 }
 
 [data-theme="default-light"] {
@@ -12,4 +13,5 @@
     --tertiary: #e0e0e0;  
     
     --text: #000000;    
+    --menu-bg: #898989;
 }

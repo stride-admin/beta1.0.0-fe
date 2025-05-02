@@ -1,7 +1,9 @@
+@import '../theme.css';
+
 .menu {
     display: flex;
     justify-content: space-between;
-    background-color: var(--tertiary);
+    background-color: var(--menu-bg);
     align-items: center;
     height: 70px;
     padding: 0 20px;

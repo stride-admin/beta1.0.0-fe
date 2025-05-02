@@ -6,10 +6,11 @@ import { useAppContext } from '../AppContext';
 import { 
     chatbot, home, wallet, gym, add_icon,
     dollar, food, event, muscle, todo
- } from '../icons/icons';
+} from '../icons/icons';
 
- import TodoForm from '../forms/TodoForm';
+import TodoForm from '../forms/TodoForm';
 import CalendarForm from '../forms/CalendarForm';
+import ExpenseForm from '../forms/ExpenseForm';
 
 export default function Menu() {
     const { currentPage, setCurrentPage } = useAppContext();
@@ -102,7 +103,7 @@ export default function Menu() {
                 return <TodoForm onClose={closeActiveForm} />;
             case 'expense':
                 // You'll create and import these forms later
-                return <div>Expense Form Placeholder</div>;
+                return <ExpenseForm onClose={closeActiveForm} />;
             case 'food':
                 return <div>Food Form Placeholder</div>;
             case 'workout':

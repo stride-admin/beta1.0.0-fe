@@ -1,3 +1,5 @@
+@import '../theme.css';
+
 .pie-chart-wrapper {
     position: relative;
     display: inline-block;
@@ -25,7 +27,7 @@
   .pie-chart-center-content .title {
     font-size: 1.2em;
     font-weight: 500;
-    color: #ffffff; 
+    color: var(--text); 
     opacity: 0.7;
     font-weight: 100;
   }
@@ -33,7 +35,7 @@
   .pie-chart-center-content .count {
     margin-top: 4px;
     font-size: 2em;
-    color: #ffffff; 
+    color: var(--text); 
     font-weight: bold;
   }
   
