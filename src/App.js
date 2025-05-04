@@ -2,34 +2,33 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { useAppContext } from './AppContext';
-
 import Home from './pages/Home';
 import Wallet from './pages/Wallet';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Chatbot from './pages/Chatbot';
-
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
-import { hb_menu } from './icons/icons';
+
+import { hb_menu, logo } from './icons/icons';
 
 function App() {
   const { currentPage, setCurrentPage, authenticated, setAuthenticated, user } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
   const [authMode, setAuthMode] = useState('login');
-
+  
   const toggleMenu = () => {
     setSideMenuOpen(prev => !prev);
   };
-
+  
   const closeSideMenu = () => {
     setSideMenuOpen(false);
   };
-
+  
   const navItems = [
     { name: 'Calendar', onClick: () => console.log('Calendar clicked') },
-    { 
-      name: 'Log Out', 
+    {
+      name: 'Log Out',
       onClick: () => {
         localStorage.removeItem('user_id');
         localStorage.removeItem('hashed_password');
@@ -39,16 +38,25 @@ function App() {
       }
     },
   ];
-
+  
   return (
     <div className="App">
       <div className="App-header">
-        <img 
-          src={hb_menu} 
-          alt="hb_menu" 
-          className="hb-menu-icon" 
-          onClick={toggleMenu}
-        />
+        {!authenticated ? (
+          <img
+            src={logo}
+            alt="hb_menu"
+            className="logo-login"
+            onClick={toggleMenu}
+          />
+        ) : (
+          <img
+            src={hb_menu}
+            alt="hb_menu"
+            className="hb-menu-icon"
+            onClick={toggleMenu}
+          />
+        )}
       </div>
       
       {/* Side Menu */}
@@ -58,8 +66,8 @@ function App() {
         </div>
         <nav className="side-menu-nav">
           {navItems.map((item, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="side-menu-item"
               onClick={() => {
                 item.onClick();
@@ -71,7 +79,7 @@ function App() {
           ))}
         </nav>
       </SideMenu>
-
+      
       {/* Main Content */}
       {(authenticated) ? (
         <>
@@ -82,25 +90,27 @@ function App() {
         </>
       ) : (
         <div className="auth-container">
-          <h2>{authMode === 'login' ? 'Login' : 'Register'}</h2>
-          <div className="auth-toggle">
-            <button 
-              onClick={() => setAuthMode('login')}
-              className={authMode === 'login' ? 'active' : ''}
-            >
-              Login
-            </button>
-            <button 
-              onClick={() => setAuthMode('register')}
-              className={authMode === 'register' ? 'active' : ''}
-            >
-              Register
-            </button>
-          </div>
-          <div className="auth-form">
-            {authMode === 'login' ? <Login /> : <Register />}
-          </div>
+          {authMode === 'login' ? (
+            <>
+              <h2>Welcome back!</h2>
+              <Login />
+            </>
+          ) : (
+            <>
+              <h2>Welcome to Stride!</h2>
+              <Register />
+            </>
+          )}
         </div>
+      )}
+      {authMode === 'login' ? (
+        <p className="auth-switch-text">
+          Don't have an account? <span className="auth-link" onClick={() => setAuthMode('register')}>Sign up</span>
+        </p>
+      ) : (
+        <p className="auth-switch-text">
+          Already have an account? <span className="auth-link" onClick={() => setAuthMode('login')}>Log in</span>
+        </p>
       )}
     </div>
   );

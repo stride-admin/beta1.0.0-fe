@@ -10,19 +10,21 @@ import CollapsibleSection from '../components/CollapsibleSection';
 import { useTodos } from '../hooks/useTodos';
 import { useCalendar } from '../hooks/useCalendar';
 import { useWallet } from '../hooks/useWallet';
+import { useHealth } from '../hooks/useHealth';
 
 import { fire } from '../icons/icons';
 
 import { supabase } from '../utils/supabaseClient';
 
 export default function Home() {
+    const pieWidth = window.innerWidth * 0.2;
+
     const [completedTodos, setCompletedTodos] = useState({});
     const streak = 12;
 
     const { 
         userId, 
         user, setUser, 
-        health, setHealth
     } = useAppContext();
 
     const { todos, deleteTodo } = useTodos();
@@ -33,12 +35,11 @@ export default function Home() {
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
 
-    const pieWidth = window.innerWidth * 0.2;
+    const { health, fetchHealth } = useHealth();
 
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
     
-    // Track active swipeable item
     const [activeSwipeId, setActiveSwipeId] = useState(null);
 
     const fetchUserData = async () => {
@@ -58,34 +59,11 @@ export default function Home() {
         }
     };
 
-    const fetchUserHealth = async () => {
-        try {
-            const { data, error } = await supabase
-                .from('user_health')
-                .select("*")
-                .eq('user_id', userId)
-                .single();
-
-            if (error && error.code !== 'PGRST116') throw error;
-
-            if (data) {
-                setHealth(data);
-                return data;
-            } else {
-                console.log('User has no health info');
-                return null;
-            }
-        } catch (err) {
-            console.error("Error fetching health:", err);
-            return null;
-        }
-    };
-
     const checkUserSetup = async () => {
-        // Get the latest data to check
         const walletData = await fetchWallet();
-        const healthData = await fetchUserHealth();
+        const healthData = await fetchHealth();
         
+        // Only show setup modal if either wallet or health data is missing
         if (!walletData || !healthData) {
             console.log("User isn't fully set up");
             setSetupModalOpen(true);
@@ -98,7 +76,7 @@ export default function Home() {
                 const userData = await fetchUserData();
     
                 if (userData) {
-                    await checkUserSetup(); // This now handles fetching both wallet and health
+                    await checkUserSetup();
                 }
     
                 setIsUserLoaded(true);
@@ -124,8 +102,9 @@ export default function Home() {
 
     const handleCloseModal = () => {
         setSetupModalOpen(false);
+        // Refresh data after setup is complete
         fetchWallet();
-        fetchUserHealth();
+        fetchHealth();
     };
 
     // Handle swipe gesture
@@ -207,9 +186,9 @@ export default function Home() {
                 <div className='home-finances'>
                     <div className='home-finances-header'>
                         <div className='home-finances-row'>
-                            <p className='home-finances-row-title'>{parseFloat(balance)}</p>
+                            <p className='home-finances-row-title'>{parseFloat(balance).toFixed(2)}</p>
                             <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>$</p>
-                            <p className='home-finances-row-title'>{parseFloat  (spentToday)}</p>
+                            <p className='home-finances-row-title'>{parseFloat(spentToday).toFixed(2)}</p>
                         </div>
                         <div className='home-finances-row'>
                             <p className='home-finances-row-subtitle'>Balance</p>

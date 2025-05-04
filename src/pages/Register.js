@@ -3,136 +3,203 @@ import React, { useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { hashPassword } from '../utils/hashUtils';
 import { useAppContext } from '../AppContext';
-
 import './Register.css';
 
 function Register() {
-  const { setCurrentPage } = useAppContext();
-  const [name, setName] = useState('');
+  const { setCurrentPage, setUserId, setAuthenticated } = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [theme, setTheme] = useState('default');
-  const [language, setLanguage] = useState('en');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [theme, setTheme] = useState('default-dark');
+  const [language, setLanguage] = useState('English');
   const [currency, setCurrency] = useState('USD');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Available options
+  const currencies = ['USD'];
+  const languages = ['English'];
+  const themes = ['default-dark'];
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
+    setSuccess('');
+
+    // Validate passwords match
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
 
     try {
-      const hashedPassword = await hashPassword(password);
+      // Check if user already exists
+      const { data: existingUser, error: checkError } = await supabase
+        .from('user')
+        .select('*')
+        .eq('email', email)
+        .single();
+      
+      if (existingUser) {
+        setError('User with this email already exists');
+        setIsLoading(false);
+        return;
+      }
 
-      // Insert new user into the 'users' table
+      // Hash password
+      const hashedPassword = await hashPassword(password);
+      
+      // Insert new user
       const { data, error: insertError } = await supabase
         .from('user')
         .insert([
-          {
-            name:name,
-            email: email,
-            password: hashedPassword,
-            theme: theme,
-            language: language,
-            currency: currency,
+          { 
+            email, 
+            password: hashedPassword, 
+            name,
+            theme,
+            language,
+            currency 
           }
         ])
         .select();
       
-      setError(`${data}`)
-
       if (insertError) {
         setError(insertError.message);
+        setIsLoading(false);
         return;
       }
-
-      // Registration successful – store user_id and hashed password in localStorage
-      console.log(data);
-      if (data && data[0] && data[0].user_id) {
-        localStorage.setItem('user_id', data[0].user_id);
-        localStorage.setItem('hashed_password', hashedPassword);
-        
-        setSuccess('Registration successful!');
-        // Optionally update app context, e.g. redirect to a dashboard
+      
+      // Successful registration
+      setSuccess('Registration successful!');
+      console.log('Registration successful:', data);
+      localStorage.setItem('user_id', data[0].user_id);
+      localStorage.setItem('hashed_password', hashedPassword);
+      setUserId(data[0].user_id);
+      setAuthenticated(true);
+      
+      // Short delay before redirecting to home
+      setTimeout(() => {
         setCurrentPage('home');
-      } else {
-        setError('Registration completed but user data not returned properly');
-      }
-
-      // Optionally update app context, e.g. redirect to a dashboard
-      setCurrentPage('home'); 
-      console.log('Registration successful');
-
+      }, 1500);
     } catch (err) {
-      // setError(`${err}: ${data}`);
+      setError(String(err));
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
+    <div className="register-form">
       <form onSubmit={handleRegister}>
-        <label>
-          Name:
+        <div className="form-group">
           <input
+            id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your name"
             required
           />
-        </label>
-        <br/>
-        <label>
-          Email:
+        </div>
+        
+        <div className="form-group">
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
             required
           />
-        </label>
-        <br/>
-        <label>
-          Password:
+        </div>
+        
+        <div className="form-group">
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create a password"
             required
           />
-        </label>
-        <br/>
-        <label>
-          Theme:
+        </div>
+        
+        <div className="form-group">
           <input
-            type="text"
-            value={theme}
-            onChange={(e) => setTheme(e.target.value)}
+            id="confirm-password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm your password"
+            required
           />
-        </label>
-        <br/>
-        <label>
-          Language:
-          <input
-            type="text"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-          />
-        </label>
-        <br/>
-        <label>
-          Currency:
-          <input
-            type="text"
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="currency">Currency (doesn't really matter yet)</label>
+          <select
+            id="currency"
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
-          />
-        </label>
-        <br/>
-        <button type="submit">Register</button>
+            className="select-input"
+          >
+            {currencies.map((curr) => (
+              <option key={curr} value={curr}>
+                {curr}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="language">Language</label>
+          <select
+            id="language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="select-input"
+          >
+            {languages.map((lang) => (
+              <option key={lang} value={lang}>
+                {lang}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="theme">Theme</label>
+          <select
+            id="theme"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+            className="select-input"
+          >
+            {themes.map((thm) => (
+              <option key={thm} value={thm}>
+                {thm === 'default-dark' ? 'Dark Theme' : thm}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
+        
+        <button 
+          type="submit" 
+          className="register-button"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Creating Account...' : 'SIGN UP'}
+        </button>
       </form>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {success && <p style={{color: 'green'}}>{success}</p>}
     </div>
   );
 }
