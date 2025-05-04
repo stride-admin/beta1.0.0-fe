@@ -6,12 +6,12 @@
     --text: #ffffff;
     --menu-bg: #303030;
 }
-
-[data-theme="default-light"] {
+/* 
+[data-theme="default"] {
     --primary: #ffffff;
     --secondary: #f0f0f0;
     --tertiary: #e0e0e0;  
     
     --text: #000000;    
     --menu-bg: #898989;
-}
+} */

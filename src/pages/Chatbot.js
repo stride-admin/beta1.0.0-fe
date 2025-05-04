@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import './Chatbot.css';
 
 const apiKey = 'h5ikHydVrSNrAhCn5WXlw1zNBiwNJsUz';
-const agentId = 'ag:c3566615:20250501:stride:ac10bea8';
+const model = 'mistral-large-2411'; // Using standard model instead of agent
 
 const client = new Mistral({ apiKey: apiKey });
 
@@ -37,29 +37,61 @@ export default function Chatbot() {
         setLoading(true);
 
         try {
-            const chatHistory = [...messages, userMessage].map(msg => ({
+            // Create chat history for the API
+            const chatHistory = messages.map(msg => ({
                 role: msg.role,
                 content: msg.content,
             }));
-            console.log(apiKey)
+            
+            // Add the user's latest message
+            chatHistory.push({
+                role: userMessage.role,
+                content: userMessage.content,
+            });
 
-            const response = await client.agents.complete({
-                agentId: agentId,
+            // Create a placeholder message with streaming ID
+            const streamingId = Date.now().toString();
+            setMessages(prevMessages => [
+                ...prevMessages,
+                { role: "assistant", content: "", id: streamingId }
+            ]);
+
+            // Stream the response using the standard chat stream API
+            const stream = await client.chat.stream({
+                model: model,
                 messages: chatHistory,
             });
 
-            const botReply = response.choices?.[0]?.message?.content || "No response from model.";
+            let fullContent = "";
+            
+            for await (const chunk of stream) {
+                const content = chunk.data?.choices?.[0]?.delta?.content || "";
+                if (content) {
+                    fullContent += content;
+                    
+                    // Update the placeholder message with the accumulated content
+                    setMessages(prevMessages => 
+                        prevMessages.map(msg => 
+                            msg.id === streamingId 
+                                ? { ...msg, content: fullContent } 
+                                : msg
+                        )
+                    );
+                }
+            }
 
-            const botMessage = {
-                role: "assistant",
-                content: botReply,
-            };
-
-            setMessages(prevMessages => [...prevMessages, botMessage]);
+            // Once streaming is complete, update the message without the temp ID
+            setMessages(prevMessages => 
+                prevMessages.map(msg => 
+                    msg.id === streamingId 
+                        ? { role: "assistant", content: fullContent } 
+                        : msg
+                )
+            );
         } catch (error) {
             console.error('Error calling Mistral API:', error);
             const errorMessage = {
-                role: "bot",
+                role: "assistant",
                 content: "Oops! Something went wrong contacting the model.",
             };
             setMessages(prevMessages => [...prevMessages, errorMessage]);
@@ -74,7 +106,7 @@ export default function Chatbot() {
                 <div className="messages-container">
                     {messages.map((message, index) => (
                         <div 
-                            key={index} 
+                            key={message.id || index} 
                             className={`message ${message.role === "user" ? "user-message" : "bot-message"}`}
                         >
                             {message.role === "assistant" ? (
@@ -88,7 +120,7 @@ export default function Chatbot() {
                         <div className="message bot-message" style={{
                             opacity: 0.5
                         }}>
-                            Thinking...
+                            {messages.some(msg => msg.id) ? "" : "Thinking..."}
                         </div>
                     )}
                     <div ref={messagesEndRef} />

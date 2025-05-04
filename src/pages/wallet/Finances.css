@@ -1,3 +1,5 @@
+@import '../../theme.css';
+
 .finances {
     display: flex;
     flex-direction: column;
@@ -36,12 +38,12 @@
 .finances-table {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px rgba(255, 255, 255, 0.40) solid;
+    border-bottom: 1px solid;
 }
 
 .finances-table-header {
     display: flex;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.40);
+    border-bottom: 2px solid;
     align-items: end;
     padding-right: 10px;
     justify-content: space-between;
@@ -151,7 +153,7 @@
 }
 
 .transactions-modal-content {
-    background-color: rgb(20, 20, 20);
+    background-color: var(--menu-bg);
     width: 95vw;
     display: flex;
     flex-direction: column;
@@ -177,8 +179,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.40);
-    font-size: 16 px;
+    border-bottom: 1px solid;
+    font-size: 16px;
     opacity: 0.5;
 }
 
