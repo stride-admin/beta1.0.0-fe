@@ -10,13 +10,12 @@
 .App {
   background-color: var(--primary);
   color: var(--text);
-  height: 100vh;
+  height: 101vh;
   width: 101vw;
   display: flex;
   flex-direction: column;
   padding: 20px;
   align-items: center;
-  overflow: scroll;
 }
 
 .App-header {

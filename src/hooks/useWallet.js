@@ -11,6 +11,7 @@ export function useWallet() {
         debits, setDebits,
         credits, setCredits
     } = useAppContext();
+    const [transactions, setTransactions] = useState([]);
 
     const fetchWallet = async () => {
         if (!userId) return null;

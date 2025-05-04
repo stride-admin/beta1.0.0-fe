@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../AppContext';
 import './Home.css';
 
@@ -14,7 +14,6 @@ import { useWallet } from '../hooks/useWallet';
 import { fire } from '../icons/icons';
 
 import { supabase } from '../utils/supabaseClient';
-import { DiscAlbum } from 'lucide-react';
 
 export default function Home() {
     const [completedTodos, setCompletedTodos] = useState({});
@@ -29,10 +28,12 @@ export default function Home() {
     const { todos, deleteTodo } = useTodos();
     const { calendar, deleteEvent } = useCalendar();
 
-    const { wallet, fetchWallet, getBalance, getSpentToday, getDailyBudget } = useWallet();
+    const { wallet, fetchWallet, getBalance, getSpentToday } = useWallet();
     const balance = getBalance() || 0;
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
+
+    const pieWidth = window.innerWidth * 0.2;
 
     const [setupModalOpen, setSetupModalOpen] = useState(false);
     const [isUserLoaded, setIsUserLoaded] = useState(false);
@@ -233,14 +234,14 @@ export default function Home() {
                             current={1922}
                             max={3000}
                             color='#FF7C4C'
-                            radius={80}
+                            radius={pieWidth}
                         />
                         <PieChart 
                             title="Cardio"
                             current={51}
                             max={60}
                             color='#DB4CFF'
-                            radius={80}
+                            radius={pieWidth}
                             unit="min"
                         />
                     </div>
