@@ -10,10 +10,10 @@ import Chatbot from './pages/Chatbot';
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
 
-import { hb_menu, logo } from './icons/icons';
+import { hb_menu, logo, fire } from './icons/icons';
 
 function App() {
-  const { currentPage, setCurrentPage, authenticated, setAuthenticated, user } = useAppContext();
+  const { currentPage, setCurrentPage, authenticated, setAuthenticated, streak } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
   const [authMode, setAuthMode] = useState(null);
   

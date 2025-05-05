@@ -18,13 +18,11 @@ export const AppProvider = ({ children }) => {
   const [debits, setDebits] = useState(null);
   const [credits, setCredits] = useState(null);
 
+  const [streak, setStreak] = useState(12);
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
-
-  useEffect(() => {
-    const pieWidth = window.innerWidth * 0.2;
-  }, [window.innerWidth]);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('user_id');
@@ -48,7 +46,8 @@ export const AppProvider = ({ children }) => {
     todos, setTodos,
     calendar, setCalendar,
     debits, setDebits,
-    credits, setCredits
+    credits, setCredits,
+    streak, setStreak
   };
 
   return (

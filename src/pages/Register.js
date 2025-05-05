@@ -1,9 +1,11 @@
 // Register.js
 import React, { useState } from 'react';
-import { supabase } from '../utils/supabaseClient';
-import { hashPassword } from '../utils/hashUtils';
 import { useAppContext } from '../AppContext';
 import './Register.css';
+
+import { supabase } from '../utils/supabaseClient';
+import { hashPassword } from '../utils/hashUtils';
+import { currencyMap } from '../utils/currencyMap';
 
 function Register() {
   const { setCurrentPage, setUserId, setAuthenticated } = useAppContext();
@@ -19,7 +21,7 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
   
   // Available options
-  const currencies = ['USD'];
+  const currencies = Object.keys(currencyMap);
   const languages = ['English'];
   const themes = ['default-dark'];
 

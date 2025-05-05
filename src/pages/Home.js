@@ -12,7 +12,7 @@ import { useCalendar } from '../hooks/useCalendar';
 import { useWallet } from '../hooks/useWallet';
 import { useHealth } from '../hooks/useHealth';
 
-import { fire } from '../icons/icons';
+import { currencyMap } from '../utils/currencyMap';
 
 import { supabase } from '../utils/supabaseClient';
 
@@ -34,6 +34,7 @@ export default function Home() {
     const balance = getBalance() || 0;
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
+    const [ currency, setCurrency ] = useState(wallet?.currency || '$');
 
     const { health, fetchHealth } = useHealth();
 
@@ -80,6 +81,7 @@ export default function Home() {
                 }
     
                 setIsUserLoaded(true);
+                setCurrency(currencyMap[userData.currency] || userData.currency);
             }
         };
     
@@ -178,8 +180,6 @@ export default function Home() {
         <div className="home">
             <div className='home-header'>
                 <h1 id='welcome-header'>{user ? `Hello, ${user.name}` : ''}</h1>
-                <img src={fire} alt='fire' id='fire' />
-                <p id='streak-no'>{streak}</p>
             </div>
 
             <div className='home-content'>
@@ -187,7 +187,7 @@ export default function Home() {
                     <div className='home-finances-header'>
                         <div className='home-finances-row'>
                             <p className='home-finances-row-title'>{parseFloat(balance).toFixed(2)}</p>
-                            <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>$</p>
+                            <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>{currency}</p>
                             <p className='home-finances-row-title'>{parseFloat(spentToday).toFixed(2)}</p>
                         </div>
                         <div className='home-finances-row'>

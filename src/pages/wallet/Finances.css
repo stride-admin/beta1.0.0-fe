@@ -5,7 +5,8 @@
     flex-direction: column;
     padding: 20px 10px;
     gap: 30px;
-    overflow-x: scroll;
+    overflow: scroll;
+    padding-bottom: 100px;
 }
 
 .finances-row {

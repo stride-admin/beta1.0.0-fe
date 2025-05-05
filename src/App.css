@@ -10,7 +10,7 @@
 .App {
   background-color: var(--primary);
   color: var(--text);
-  height: 101vh;
+  height: 100vh;
   width: 101vw;
   display: flex;
   flex-direction: column;
