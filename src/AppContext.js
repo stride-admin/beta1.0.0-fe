@@ -21,6 +21,7 @@ export const AppProvider = ({ children }) => {
   const [wallet, setWallet] = useState(null);
   const [debits, setDebits] = useState(null);
   const [credits, setCredits] = useState(null);
+  const [currency, setCurrency] = useState(null);
 
   const [streak, setStreak] = useState(12);
 
@@ -136,6 +137,7 @@ export const AppProvider = ({ children }) => {
     debits, setDebits,
     credits, setCredits,
     streak, setStreak,
+    currency, setCurrency,
     isNewUser, setIsNewUser,
     isCheckingUserData,
     refreshUserData

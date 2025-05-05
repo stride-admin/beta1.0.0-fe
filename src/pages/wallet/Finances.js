@@ -16,7 +16,7 @@ export default function Finances() {
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
     const savingGoal = wallet?.savings_goal || 0;
-    const [ currency, setCurrency ] = useState(wallet?.currency || '$');
+    const [ currency, setCurrency ] = useState(user?.currency || '$');
     
 
     const [ isTransactionsOpen, setTransactionsOpen ] = useState(false);

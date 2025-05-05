@@ -34,7 +34,7 @@ export default function Home() {
     const balance = getBalance() || 0;
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
-    const [ currency, setCurrency ] = useState(wallet?.currency || '$');
+    const [ currency, setCurrency ] = useState(currencyMap[user?.currency]|| '$');
 
     const { health, fetchHealth } = useHealth();
 

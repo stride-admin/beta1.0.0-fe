@@ -17,6 +17,7 @@
 │   ├── WelcomeModal.js
 ├── forms /
 │   ├── CalendarForm.js
+│   ├── ExerciseForm.js
 │   ├── ExpenseForm.js
 │   ├── FormStyles.css
 │   ├── TodoForm.js
@@ -28,6 +29,10 @@
 ├── icons /
 │   ├── icons.js
 ├── pages /
+│   ├── health /
+│   │   ├── Gym.css
+│   │   ├── Gym.js
+│   │   ├── Nutrition.js
 │   ├── wallet /
 │   │   ├── Finances.css
 │   │   ├── Finances.js
@@ -42,6 +47,8 @@
 │   ├── Register.js
 │   ├── Wallet.css
 │   ├── Wallet.js
+│   ├── WelcomeSetup.css
+│   ├── WelcomeSetup.js
 ├── services /
 │   ├── calendar.service.js
 │   ├── health.service.js
