@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from './utils/supabaseClient'; // Make sure this import points to your supabase client
+
 
 const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
@@ -8,6 +10,8 @@ export const AppProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(true);
   const [theme, setTheme] = useState('default');
   const [currentPage, setCurrentPage] = useState('home');
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [isCheckingUserData, setIsCheckingUserData] = useState(true);
 
   const [user, setUser] = useState({});
   const [health, setHealth] = useState(null);
@@ -35,6 +39,90 @@ export const AppProvider = ({ children }) => {
     }
   }, [currentPage]);
 
+    // Check if user has completed setup
+  useEffect(() => {
+    const checkUserSetup = async () => {
+      if (!authenticated || !userId) {
+        setIsCheckingUserData(false);
+        return;
+      }
+
+      try {
+        // Check for health data
+        const { data: healthData, error: healthError } = await supabase
+          .from('user_health')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+          
+        if (healthData) {
+          setHealth(healthData);
+        }
+
+        // Check for wallet data
+        const { data: walletData, error: walletError } = await supabase
+          .from('user_wallet')
+          .select('*')
+          .eq('user_id', userId)
+          .single();
+          
+        if (walletData) {
+          setWallet(walletData);
+        }
+
+        // Set new user flag based on presence of both records
+        const needsSetup = !healthData || !walletData;
+        setIsNewUser(needsSetup);
+      } catch (error) {
+        console.error('Error checking user setup:', error);
+      } finally {
+        setIsCheckingUserData(false);
+      }
+    };
+
+    if (authenticated && userId) {
+      checkUserSetup();
+    }
+  }, [authenticated, userId, health, wallet]);
+
+  // Function to refresh user data after setup completion
+  const refreshUserData = async () => {
+    if (!authenticated || !userId) return;
+
+    try {
+      setIsCheckingUserData(true);
+      
+      // Fetch health data
+      const { data: healthData } = await supabase
+        .from('user_health')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+        
+      if (healthData) {
+        setHealth(healthData);
+      }
+
+      // Fetch wallet data
+      const { data: walletData } = await supabase
+        .from('user_wallet')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+        
+      if (walletData) {
+        setWallet(walletData);
+      }
+
+      // Update new user status
+      setIsNewUser(!healthData || !walletData);
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    } finally {
+      setIsCheckingUserData(false);
+    }
+  };
+
   const value = {
     theme, setTheme,
     currentPage, setCurrentPage,
@@ -47,7 +135,10 @@ export const AppProvider = ({ children }) => {
     calendar, setCalendar,
     debits, setDebits,
     credits, setCredits,
-    streak, setStreak
+    streak, setStreak,
+    isNewUser, setIsNewUser,
+    isCheckingUserData,
+    refreshUserData
   };
 
   return (

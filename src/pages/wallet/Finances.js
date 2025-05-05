@@ -7,12 +7,17 @@ import { useWallet } from '../../hooks/useWallet';
 import Modal from '../../components/Modal';
 import PieChart from '../../components/PieChart';
 
+import { currencyMap } from '../../utils/currencyMap';
+
 export default function Finances() {
+    const { user } = useAppContext();
     const { wallet, debits, getBalance, getSpentToday, deleteTransaction } = useWallet();
     const balance = getBalance() || 0;
     const spentToday = getSpentToday() || 0;
     const budgetMax = wallet?.daily_budget || 0;
     const savingGoal = wallet?.savings_goal || 0;
+    const [ currency, setCurrency ] = useState(wallet?.currency || '$');
+    
 
     const [ isTransactionsOpen, setTransactionsOpen ] = useState(false);
     const pieWidth = window.innerWidth * 0.2;
@@ -214,11 +219,15 @@ export default function Finances() {
     
     const recentGroupedTransactions = getRecentGroupedTransactions();
     
+    useEffect(() => {
+        setCurrency(currencyMap[user.currency] || user.currency);
+    }, [user]);
+
     return (
         <div className='finances'>
             <div className='finances-header'>
                 <div className='finances-row finances-row-header'>
-                    <p className='finances-row-title' style={{ opacity: 0.3, fontSize:'30px' }}>$</p>
+                    <p className='finances-row-title' style={{ opacity: 0.3, fontSize:'30px' }}>{currency}</p>
                     <p className='finances-row-title' style={{fontSize: '7vh', fontWeight: 1000}}>{parseFloat(balance)}</p>
                 </div>
                 <div className='finances-row'>

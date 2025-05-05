@@ -1,0 +1,166 @@
+/* src/styles/WelcomeSetup.css */
+@import '../theme.css';
+
+.welcome-setup-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
+    overflow: scroll;
+  }
+  
+  .welcome-setup-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: white;
+  }
+  
+  .welcome-setup-container p {
+    font-size: 16px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #666;
+  }
+  
+  .setup-form {
+    border-radius: 10px;
+  }
+  
+  .setup-form h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #2a6aff;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+  }
+  
+  .form-group input[type="number"],
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .macro-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .macro-inputs div {
+    flex: 1;
+  }
+  
+  .macro-inputs label {
+    text-align: center;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  
+  .macro-warning {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  .hydration-group {
+    margin-bottom: 20px;
+  }
+  
+  .hydration-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .hydration-input input {
+    flex: 2;
+  }
+  
+  .hydration-input select {
+    flex: 1;
+  }
+  
+  .setup-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+  }
+  
+  .setup-btn, .back-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .setup-btn {
+    background-color: #2a6aff;
+    color: white;
+    flex: 2;
+  }
+  
+  .back-btn {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    flex: 1;
+  }
+  
+  .setup-btn:hover {
+    background-color: #1a5aef;
+  }
+  
+  .back-btn:hover {
+    background-color: #eaeaea;
+  }
+  
+  .setup-btn:disabled, .back-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    background-color: #fff0f0;
+    color: #d32f2f;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border-left: 4px solid #d32f2f;
+  }
+  
+  @media (max-width: 480px) {
+    .welcome-setup-container {
+      padding: 15px;
+    }
+    
+    .macro-inputs {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .setup-buttons {
+      flex-direction: column;
+    }
+    
+    .back-btn, .setup-btn {
+      width: 100%;
+    }
+  }

@@ -2,11 +2,16 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import { useAppContext } from './AppContext';
+
+import { supabase } from './utils/supabaseClient';
+
 import Home from './pages/Home';
 import Wallet from './pages/Wallet';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Chatbot from './pages/Chatbot';
+import WelcomeSetup from './pages/WelcomeSetup';
+
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
 
@@ -15,7 +20,50 @@ import { hb_menu, logo, fire } from './icons/icons';
 function App() {
   const { currentPage, setCurrentPage, authenticated, setAuthenticated, streak } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
-  const [authMode, setAuthMode] = useState(null);
+  const [authMode, setAuthMode] = useState('login');
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Check if user has health and wallet data
+  useEffect(() => {
+    const checkUserData = async () => {
+      if (!authenticated) {
+        setIsLoading(false);
+        return;
+      }
+      
+      const user_id = localStorage.getItem('user_id');
+      if (!user_id) {
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        // Check if user has health data
+        const { data: healthData, error: healthError } = await supabase
+          .from('user_health')
+          .select('*')
+          .eq('user_id', user_id)
+          .single();
+          
+        // Check if user has wallet data
+        const { data: walletData, error: walletError } = await supabase
+          .from('user_wallet')
+          .select('*')
+          .eq('user_id', user_id)
+          .single();
+        
+        // If either is missing, user needs to complete setup
+        setIsNewUser(!healthData || !walletData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error checking user data:', error);
+        setIsLoading(false);
+      }
+    };
+    
+    checkUserData();
+  }, [authenticated]);
   
   const toggleMenu = () => {
     setSideMenuOpen(prev => !prev);
@@ -39,13 +87,23 @@ function App() {
     },
   ];
   
+  if (isLoading) {
+    return (
+      <div className="App">
+        <div className="loading-screen">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="App">
       <div className="App-header">
         {!authenticated ? (
           <img
             src={logo}
-            alt="hb_menu"
+            alt="logo"
             className="logo-login"
             onClick={toggleMenu}
           />
@@ -81,13 +139,19 @@ function App() {
       </SideMenu>
       
       {/* Main Content */}
-      {(authenticated) ? (
-        <>
-          {currentPage === 'home' && <Home />}
-          {currentPage === 'wallet' && <Wallet />}
-          {currentPage === 'chatbot' && <Chatbot />}
-          <Menu />
-        </>
+      {authenticated ? (
+        isNewUser ? (
+          // Show Welcome Setup for new users
+          <WelcomeSetup />
+        ) : (
+          // Show regular app content for existing users
+          <>
+            {currentPage === 'home' && <Home />}
+            {currentPage === 'wallet' && <Wallet />}
+            {currentPage === 'chatbot' && <Chatbot />}
+            <Menu />
+          </>
+        )
       ) : (
         <div className="auth-container">
           {authMode === 'login' ? (

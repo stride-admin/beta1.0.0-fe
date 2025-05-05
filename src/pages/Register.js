@@ -144,7 +144,7 @@ function Register() {
         </div>
         
         <div className="form-group">
-          <label htmlFor="currency">Currency (doesn't really matter yet)</label>
+          <label htmlFor="currency">Currency</label>
           <select
             id="currency"
             value={currency}
