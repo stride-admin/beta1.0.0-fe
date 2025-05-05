@@ -23,6 +23,10 @@ export const AppProvider = ({ children }) => {
   }, [theme]);
 
   useEffect(() => {
+    const pieWidth = window.innerWidth * 0.2;
+  }, [window.innerWidth]);
+
+  useEffect(() => {
     const storedUserId = localStorage.getItem('user_id');
     const hashedPassword = localStorage.getItem('hashed_password');
     if (storedUserId && hashedPassword) {
@@ -34,10 +38,8 @@ export const AppProvider = ({ children }) => {
   }, [currentPage]);
 
   const value = {
-    theme,
-    setTheme,
-    currentPage,
-    setCurrentPage,
+    theme, setTheme,
+    currentPage, setCurrentPage,
     userId, setUserId,
     authenticated, setAuthenticated,
     user, setUser,

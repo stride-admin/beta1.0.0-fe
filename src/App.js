@@ -15,7 +15,7 @@ import { hb_menu, logo } from './icons/icons';
 function App() {
   const { currentPage, setCurrentPage, authenticated, setAuthenticated, user } = useAppContext();
   const [isSideMenuOpen, setSideMenuOpen] = useState(false);
-  const [authMode, setAuthMode] = useState('login');
+  const [authMode, setAuthMode] = useState(null);
   
   const toggleMenu = () => {
     setSideMenuOpen(prev => !prev);
@@ -103,13 +103,23 @@ function App() {
           )}
         </div>
       )}
-      {authMode === 'login' ? (
+      {!authenticated && (
         <p className="auth-switch-text">
-          Don't have an account? <span className="auth-link" onClick={() => setAuthMode('register')}>Sign up</span>
-        </p>
-      ) : (
-        <p className="auth-switch-text">
-          Already have an account? <span className="auth-link" onClick={() => setAuthMode('login')}>Log in</span>
+          {authMode === 'login' ? (
+            <>
+              Don't have an account?{' '}
+              <span className="auth-link" onClick={() => setAuthMode('register')}>
+                Sign up
+              </span>
+            </>
+          ) : (
+            <>
+              Already have an account?{' '}
+              <span className="auth-link" onClick={() => setAuthMode('login')}>
+                Log in
+              </span>
+            </>
+          )}
         </p>
       )}
     </div>

@@ -6,7 +6,7 @@
   align-items: start;
   padding: 0 10px;
   opacity: 0.8;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 #welcome-header { 
