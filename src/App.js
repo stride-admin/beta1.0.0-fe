@@ -5,12 +5,14 @@ import { useAppContext } from './AppContext';
 
 import { supabase } from './utils/supabaseClient';
 
-import Home from './pages/Home';
-import Wallet from './pages/Wallet';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Chatbot from './pages/Chatbot';
 import WelcomeSetup from './pages/WelcomeSetup';
+
+import Home from './pages/Home';
+import Wallet from './pages/Wallet';
+import Health from './pages/Health';
+import Chatbot from './pages/Chatbot';
 
 import Menu from './components/Menu';
 import SideMenu from './components/SideMenu';
@@ -148,6 +150,7 @@ function App() {
           <>
             {currentPage === 'home' && <Home />}
             {currentPage === 'wallet' && <Wallet />}
+            {currentPage === 'health' && <Health />}
             {currentPage === 'chatbot' && <Chatbot />}
             <Menu />
           </>

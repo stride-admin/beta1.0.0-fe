@@ -11,6 +11,7 @@ import {
 import TodoForm from '../forms/TodoForm';
 import CalendarForm from '../forms/CalendarForm';
 import ExpenseForm from '../forms/ExpenseForm';
+import ExerciseForm from '../forms/ExerciseForm';
 
 export default function Menu() {
     const { currentPage, setCurrentPage } = useAppContext();
@@ -107,7 +108,7 @@ export default function Menu() {
             case 'food':
                 return <div>Food Form Placeholder</div>;
             case 'workout':
-                return <div>Workout Form Placeholder</div>;
+                return <ExerciseForm onClose={closeActiveForm} />;
             case 'event':
                 return <CalendarForm onClose={closeActiveForm} />;
             default:
@@ -138,9 +139,9 @@ export default function Menu() {
                 />
                 <img 
                     src={gym} 
-                    alt="Gym" 
-                    className={`menu-icon ${currentPage === 'gym' ? 'selected' : ''}`} 
-                    onClick={handleMenuClick('gym')} 
+                    alt="Health" 
+                    className={`menu-icon ${currentPage === 'health' ? 'selected' : ''}`} 
+                    onClick={handleMenuClick('health')} 
                 />
                 <img 
                     src={chatbot} 

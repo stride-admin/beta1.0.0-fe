@@ -20,7 +20,7 @@ export default function Home() {
     const pieWidth = window.innerWidth * 0.2;
 
     const [completedTodos, setCompletedTodos] = useState({});
-    const streak = 12;
+    // const streak = 12;
 
     const { 
         userId, 
