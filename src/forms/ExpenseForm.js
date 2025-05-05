@@ -10,7 +10,7 @@ export default function ExpenseForm({ onClose }) {
 
     const [expenseData, setExpenseData] = useState({
         category: '',
-        amount: '',
+        amount: '', 
         description: '',
         type: 1 // 1 = debit (expense), 0 = credit (income)
     });

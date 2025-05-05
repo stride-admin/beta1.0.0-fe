@@ -84,7 +84,7 @@ export const AppProvider = ({ children }) => {
     if (authenticated && userId) {
       checkUserSetup();
     }
-  }, [authenticated, userId, health, wallet]);
+  }, [authenticated, userId]);
 
   // Function to refresh user data after setup completion
   const refreshUserData = async () => {
