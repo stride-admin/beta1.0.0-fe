@@ -1,0 +1,103 @@
+.gym {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 0 10px;
+    gap: 30px;
+    overflow: scroll;
+    padding-bottom: 100px;
+}
+
+.gym-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.gym-workout-table {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid;
+}
+
+.gym-table-header {
+    display: flex;
+    border-bottom: 2px solid;
+    align-items: end;
+    padding-right: 10px;
+    justify-content: space-between;
+}
+
+.gym-table-header-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    font-weight: 500;
+    opacity: 0.5;
+}
+
+.gym-table-exercises {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gym-table-exercise {
+    display: flex;
+    min-height: 30px;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+    align-items: center;
+}
+
+.gym-table-exercise-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.gym-table-exercise-name {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.gym-table-exercise-type {
+    font-size: 14px;
+    opacity: 0.6;
+    text-transform: capitalize;
+}
+
+.gym-table-exercise-details {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.delete-exercise-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: opacity 0.3s ease;
+}
+
+.delete-exercise-btn:hover {
+    opacity: 0.8;
+}
+
+.even-row {
+    background-color: transparent;
+}
+
+.odd-row {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.no-exercises {
+    opacity: 0.5;
+    padding: 10px;
+    text-align: center;
+}

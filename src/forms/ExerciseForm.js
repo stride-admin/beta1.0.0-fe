@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../AppContext';
 import { useHealth } from '../hooks/useHealth';
 
@@ -11,12 +11,11 @@ export default function ExerciseForm({ onClose }) {
     const [exerciseData, setExerciseData] = useState({
         workout_type: 'weights', // Default to weights
         exercise: '',
-        reps: '',
-        weight: '',
+        reps: 0,
+        weight: 0,
         weight_unit: 'kg',
-        duration_min: '',
-        intensity: '',  // Will be used for distance in cardio
-        logged_at: new Date().toISOString().split('T')[0] // Current date in YYYY-MM-DD format
+        duration_min: 0,
+        intensity: 0,  // Will be used for distance in cardio
     });
 
     const handleChange = (e) => {
@@ -24,7 +23,7 @@ export default function ExerciseForm({ onClose }) {
         setExerciseData(prev => ({
             ...prev,
             [name]: name === 'reps' || name === 'weight' || name === 'duration_min' || name === 'intensity' 
-                ? value === '' ? '' : parseFloat(value) 
+                ? value === '' ? 0 : Number(value) 
                 : value
         }));
 
@@ -193,18 +192,6 @@ export default function ExerciseForm({ onClose }) {
                         />
                     </div>
                 )}
-
-                <div className="form-group">
-                    <label htmlFor="logged_at">Date</label>
-                    <input
-                        type="date"
-                        id="logged_at"
-                        name="logged_at"
-                        value={exerciseData.logged_at}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
 
                 <div className="form-actions">
                     <button type="button" className="cancel-btn" onClick={onClose}>

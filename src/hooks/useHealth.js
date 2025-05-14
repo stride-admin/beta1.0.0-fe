@@ -6,6 +6,7 @@ export function useHealth() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { userId, health, setHealth } = useAppContext();
+    const [exercises, setExercises] = useState([]);
 
     const fetchHealth = async () => {
         if (!userId) return null;
@@ -30,7 +31,7 @@ export function useHealth() {
         setLoading(true);
         try {
             const exercisesData = await healthService.fetchExercises(userId);
-            setHealth(exercisesData);
+            setExercises(exercisesData);
             setError(null);
             return exercisesData;
         } catch (err) {
@@ -46,8 +47,9 @@ export function useHealth() {
 
         setLoading(true);
         try {
-            const newExercise = await healthService.addExercise(userId, exercise);
-            setHealth((prevHealth) => [...prevHealth, newExercise]);
+            const exerciseWithUserId = { ...exercise, user_id: userId };
+            const newExercise = await healthService.addExercise(exerciseWithUserId);
+            setExercises(prevExercises => [...prevExercises, ...newExercise]);
             setError(null);
             return newExercise;
         } catch (err) {
@@ -64,7 +66,7 @@ export function useHealth() {
         setLoading(true);
         try {
             await healthService.deleteExercise(userId, exerciseId);
-            setHealth((prevHealth) => prevHealth.filter(ex => ex.id !== exerciseId));
+            setExercises(prevExercises => prevExercises.filter(ex => ex.id !== exerciseId));
             setError(null);
         } catch (err) {
             setError(err.message);
@@ -81,7 +83,8 @@ export function useHealth() {
     return { 
         loading, 
         error, 
-        health, 
+        health,
+        exercises,
         fetchHealth,
         fetchExercises,
         addExercise,

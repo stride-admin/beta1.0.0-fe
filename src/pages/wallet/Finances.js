@@ -228,7 +228,7 @@ export default function Finances() {
             <div className='finances-header'>
                 <div className='finances-row finances-row-header'>
                     <p className='finances-row-title' style={{ opacity: 0.3, fontSize:'30px' }}>{currency}</p>
-                    <p className='finances-row-title' style={{fontSize: '7vh', fontWeight: 1000}}>{parseFloat(balance)}</p>
+                    <p className='finances-row-title' style={{fontSize: '7vh', fontWeight: 1000}}>{parseFloat(balance).toFixed(2)}</p>
                 </div>
                 <div className='finances-row'>
                     <p className='finances-row-subtitle'>Balance</p>
