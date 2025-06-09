@@ -55,6 +55,8 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 10px;
+    width: 100%;
 }
 
 .gym-table-exercise-name {
@@ -73,19 +75,50 @@
     opacity: 0.8;
 }
 
-.delete-exercise-btn {
-    background-color: #ff4d4f;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: opacity 0.3s ease;
+.exercise-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    width: 100%;
+    margin: 2px 0;
+    border-radius: 8px;
 }
 
-.delete-exercise-btn:hover {
-    opacity: 0.8;
+.exercise-swipeable {
+    width: 100%;
+    display: flex;
+    touch-action: pan-y;
+    background-color: var(--menu-bg);
+    position: relative;
+    z-index: 1;
+    min-height: 60px;
+    align-items: center;
+    will-change: transform;
+}
+
+.delete-exercise-btn {
+    position: absolute;
+    right: -100px;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    background-color: #ff4d4f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: right 0.3s ease;
+    z-index: 0;
+    cursor: pointer;
+}
+
+.delete-exercise-btn.visible {
+    right: 0;
+}
+
+.delete-btn-text {
+    font-size: 14px;
 }
 
 .even-row {

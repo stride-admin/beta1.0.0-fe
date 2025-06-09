@@ -183,28 +183,30 @@ export default function Home() {
             </div>
 
             <div className='home-content'>
-                <div className='home-finances'>
-                    <div className='home-finances-header'>
-                        <div className='home-finances-row'>
-                            <p className='home-finances-row-title'>{parseFloat(balance).toFixed(2)}</p>
-                            <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>{currency}</p>
-                            <p className='home-finances-row-title'>{parseFloat(spentToday).toFixed(2)}</p>
+                <CollapsibleSection title={'Finances'}>
+                    <div className='home-finances'>
+                        <div className='home-finances-header'>
+                            <div className='home-finances-row'>
+                                <p className='home-finances-row-title'>{parseFloat(balance).toFixed(2)}</p>
+                                <p className='home-finances-row-title' style={{ opacity: 0.3, fontWeight: 100 }}>{currency}</p>
+                                <p className='home-finances-row-title'>{parseFloat(spentToday).toFixed(2)}</p>
+                            </div>
+                            <div className='home-finances-row'>
+                                <p className='home-finances-row-subtitle'>Balance</p>
+                                <p className='home-finances-row-subtitle'>Spent today</p>
+                            </div>
                         </div>
-                        <div className='home-finances-row'>
-                            <p className='home-finances-row-subtitle'>Balance</p>
-                            <p className='home-finances-row-subtitle'>Spent today</p>
-                        </div>
+                        {wallet ? (
+                            <ProgressBar
+                                id="home-finances-progress-bar"
+                                title="Budget remaining"
+                                current={spentToday}
+                                max={budgetMax}
+                                color="#2D81FF"
+                            />
+                        ) : null}
                     </div>
-                    {wallet ? (
-                        <ProgressBar
-                            id="home-finances-progress-bar"
-                            title="Budget remaining"
-                            current={spentToday}
-                            max={budgetMax}
-                            color="#2D81FF"
-                        />
-                    ) : null}
-                </div>
+                </CollapsibleSection>
 
                 <CollapsibleSection title={'Health'}>
                     <div className='home-health-content'>
