@@ -82,6 +82,8 @@
     width: 100%;
     margin: 2px 0;
     border-radius: 8px;
+    /* Ensure each container is isolated */
+    isolation: isolate;
 }
 
 .exercise-swipeable {
@@ -90,15 +92,16 @@
     touch-action: pan-y;
     background-color: var(--menu-bg);
     position: relative;
-    z-index: 1;
+    z-index: 2; /* Higher z-index than delete button */
     min-height: 60px;
     align-items: center;
     will-change: transform;
+    transition: transform 0.3s ease;
 }
 
 .delete-exercise-btn {
     position: absolute;
-    right: -100px;
+    right: 0;
     top: 0;
     bottom: 0;
     width: 100px;
@@ -108,13 +111,16 @@
     justify-content: center;
     color: white;
     font-weight: bold;
-    transition: right 0.3s ease;
-    z-index: 0;
+    z-index: 1; /* Lower z-index than swipeable */
     cursor: pointer;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .delete-exercise-btn.visible {
-    right: 0;
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .delete-btn-text {

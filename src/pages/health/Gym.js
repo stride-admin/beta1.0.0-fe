@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAppContext } from '../../AppContext';
 import { useHealth } from '../../hooks/useHealth';
 import PieChart from '../../components/PieChart';
@@ -10,17 +10,18 @@ export default function Gym() {
     const { health, exercises, fetchExercises, deleteExercise } = useHealth();
     const pieWidth = window.innerWidth * 0.2;
     const [activeSwipeId, setActiveSwipeId] = useState(null);
-    const [swipeStates, setSwipeStates] = useState({});
+    const swipeRefs = useRef({});
 
     // Close any open swipe when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (activeSwipeId && !event.target.closest(`.exercise-swipeable[data-id="${activeSwipeId}"]`)) {
+                const swipeElement = swipeRefs.current[activeSwipeId];
+                if (swipeElement) {
+                    swipeElement.style.transform = 'translateX(0px)';
+                    swipeElement.style.transition = 'transform 0.3s ease';
+                }
                 setActiveSwipeId(null);
-                setSwipeStates(prev => ({
-                    ...prev,
-                    [activeSwipeId]: 0
-                }));
             }
         };
 
@@ -38,11 +39,16 @@ export default function Gym() {
             
             // Close any other open swipes first
             if (activeSwipeId && activeSwipeId !== exerciseId) {
-                setSwipeStates(prev => ({
-                    ...prev,
-                    [activeSwipeId]: 0
-                }));
+                const prevSwipeElement = swipeRefs.current[activeSwipeId];
+                if (prevSwipeElement) {
+                    prevSwipeElement.style.transform = 'translateX(0px)';
+                    prevSwipeElement.style.transition = 'transform 0.3s ease';
+                }
+                setActiveSwipeId(null);
             }
+            
+            // Remove transition during swipe
+            swipeItem.style.transition = 'none';
             
             // Set current position
             swipeItem.dataset.startX = touch.clientX;
@@ -67,18 +73,8 @@ export default function Gym() {
             // Limit the swipe distance
             if (diff < -100) diff = -100;
             
-            // Update the swipe state for this specific item only
-            setSwipeStates(prev => ({
-                ...prev,
-                [exerciseId]: diff
-            }));
-            
-            // Show delete button when swiped enough
-            if (diff < -50) {
-                setActiveSwipeId(exerciseId);
-            } else if (activeSwipeId === exerciseId) {
-                setActiveSwipeId(null);
-            }
+            // Apply transform directly to this element only
+            swipeItem.style.transform = `translateX(${diff}px)`;
         };
     };
 
@@ -89,32 +85,28 @@ export default function Gym() {
             const endX = parseInt(swipeItem.dataset.currentX);
             const diff = endX - startX;
             
+            // Add transition back for snap animation
+            swipeItem.style.transition = 'transform 0.3s ease';
+            
             // If swiped far enough, keep it open
             if (diff < -50) {
-                setSwipeStates(prev => ({
-                    ...prev,
-                    [exerciseId]: -100
-                }));
+                swipeItem.style.transform = 'translateX(-100px)';
                 setActiveSwipeId(exerciseId);
             } else {
                 // Not swiped far enough, snap back
-                setSwipeStates(prev => ({
-                    ...prev,
-                    [exerciseId]: 0
-                }));
-                if (activeSwipeId === exerciseId) {
-                    setActiveSwipeId(null);
-                }
+                swipeItem.style.transform = 'translateX(0px)';
+                setActiveSwipeId(null);
             }
         };
     };
 
-    // Reset swipe state
+    // Reset swipe state - similar to Finances.js
     const resetSwipe = (exerciseId) => {
-        setSwipeStates(prev => ({
-            ...prev,
-            [exerciseId]: 0
-        }));
+        const swipeElement = swipeRefs.current[exerciseId];
+        if (swipeElement) {
+            swipeElement.style.transform = 'translateX(0px)';
+            swipeElement.style.transition = 'transform 0.3s ease';
+        }
         setActiveSwipeId(null);
     };
 
@@ -178,29 +170,33 @@ export default function Gym() {
                         todayExercises.map((exercise, index) => (
                             <div key={exercise.id} className="exercise-container">
                                 <div 
+                                    ref={el => swipeRefs.current[exercise.id] = el}
                                     className={`exercise-swipeable ${index % 2 === 0 ? 'even-row' : 'odd-row'}`}
                                     data-id={exercise.id}
                                     onTouchStart={handleTouchStart(exercise.id)}
                                     onTouchMove={handleTouchMove(exercise.id)}
                                     onTouchEnd={handleTouchEnd(exercise.id)}
                                     style={{ 
-                                        transform: `translateX(${swipeStates[exercise.id] || 0}px)`,
-                                        transition: swipeStates[exercise.id] === undefined ? 'transform 0.3s ease' : 'none'
+                                        transform: 'translateX(0px)',
+                                        transition: 'transform 0.3s ease'
                                     }}
                                 >
                                     <div className='gym-table-exercise-content'>
                                         <p className='gym-table-exercise-name'>{exercise.exercise}</p>
-                                        <p className='gym-table-exercise-type'>{exercise.workout_type}</p>
                                         {exercise.workout_type === 'weights' ? (
                                             <p className='gym-table-exercise-details'>
                                                 {exercise.reps} reps × {exercise.weight} {exercise.weight_unit}
                                             </p>
-                                        ) : (
+                                        ) : (exercise.workout_type === 'cardio' ? (
                                             <p className='gym-table-exercise-details'>
                                                 {exercise.duration_min} min
                                                 {exercise.intensity ? ` × ${exercise.intensity} km` : ''}
                                             </p>
-                                        )}
+                                        ) : (
+                                            <p className='gym-table-exercise-details'>
+                                                {exercise.duration_min} min
+                                            </p>
+                                        ))}
                                     </div>
                                 </div>
                                 <div 
