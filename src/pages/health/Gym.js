@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useAppContext } from '../../AppContext';
 import { useHealth } from '../../hooks/useHealth';
 import PieChart from '../../components/PieChart';
+import Modal from '../../components/Modal';
+import CollapsibleSection from '../../components/CollapsibleSection';
 
 import './Gym.css';
 
@@ -11,6 +13,51 @@ export default function Gym() {
     const pieWidth = window.innerWidth * 0.2;
     const [activeSwipeId, setActiveSwipeId] = useState(null);
     const swipeRefs = useRef({});
+    const [isAllWorkoutsOpen, setIsAllWorkoutsOpen] = useState(false);
+
+    // Group exercises by date
+    const groupExercisesByDate = (exercises) => {
+        if (!exercises || exercises.length === 0) return [];
+        
+        const groupedExercises = {};
+        
+        exercises.forEach(exercise => {
+            // Extract date part from logged_at
+            const date = exercise.logged_at.split('T')[0];
+            
+            if (!groupedExercises[date]) {
+                groupedExercises[date] = [];
+            }
+            
+            groupedExercises[date].push(exercise);
+        });
+        
+        // Convert to array and sort dates in descending order
+        return Object.keys(groupedExercises)
+            .sort()
+            .reverse()
+            .map(date => ({
+                date,
+                formattedDate: new Date(date).toLocaleDateString('en-US', {
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                }),
+                exercises: groupedExercises[date].sort((a, b) => 
+                    new Date(b.logged_at) - new Date(a.logged_at)
+                )
+            }));
+    };
+
+    const groupedExercises = groupExercisesByDate(exercises);
+
+    const handleOpenAllWorkoutsModal = () => {
+        setIsAllWorkoutsOpen(true);
+    };
+
+    const handleCloseAllWorkoutsModal = () => {
+        setIsAllWorkoutsOpen(false);
+    };
 
     // Close any open swipe when clicking outside
     useEffect(() => {
@@ -164,6 +211,7 @@ export default function Gym() {
             <div className='gym-workout-table'>
                 <div className='gym-table-header'>
                     <p className='gym-table-header-title'>Today's Workout</p>
+                    <p className='gym-table-header-subtitle' onClick={handleOpenAllWorkoutsModal}>See all</p>
                 </div>
                 <div className='gym-table-exercises'>
                     {todayExercises.length > 0 ? (
@@ -212,6 +260,78 @@ export default function Gym() {
                     )}
                 </div>
             </div>
+
+            {isAllWorkoutsOpen && (
+                <Modal
+                    isOpen={isAllWorkoutsOpen}
+                    onClose={handleCloseAllWorkoutsModal}
+                    className="workouts-modal"
+                    transitionDuration={400}
+                >
+                    <div className='workouts-modal-content'>
+                        <div className='workouts-modal-header'>
+                            <p className='workouts-modal-title'>All Workouts</p>
+                            <p className='workouts-modal-close' onClick={handleCloseAllWorkoutsModal}>X</p>
+                        </div>
+                        <div className='workouts-modal-body'>
+                            {groupedExercises.length > 0 ? (
+                                groupedExercises.map(group => (
+                                    <CollapsibleSection key={group.date} title={group.formattedDate}>
+                                        {group.exercises.map((exercise, index) => (
+                                            <div key={exercise.id} className="exercise-container">
+                                                <div 
+                                                    ref={el => swipeRefs.current[exercise.id] = el}
+                                                    className={`exercise-swipeable ${index % 2 === 0 ? 'even-row' : 'odd-row'}`}
+                                                    data-id={exercise.id}
+                                                    onTouchStart={handleTouchStart(exercise.id)}
+                                                    onTouchMove={handleTouchMove(exercise.id)}
+                                                    onTouchEnd={handleTouchEnd(exercise.id)}
+                                                    style={{ 
+                                                        transform: 'translateX(0px)',
+                                                        transition: 'transform 0.3s ease'
+                                                    }}
+                                                >
+                                                    <div className='gym-table-exercise-content'>
+                                                        <p className='gym-table-exercise-name'>{exercise.exercise}</p>
+                                                        {exercise.workout_type === 'weights' ? (
+                                                            <p className='gym-table-exercise-details'>
+                                                                {exercise.reps} reps × {exercise.weight} {exercise.weight_unit}
+                                                            </p>
+                                                        ) : (exercise.workout_type === 'cardio' ? (
+                                                            <p className='gym-table-exercise-details'>
+                                                                {exercise.duration_min} min
+                                                                {exercise.intensity ? ` × ${exercise.intensity} km` : ''}
+                                                            </p>
+                                                        ) : (
+                                                            <p className='gym-table-exercise-details'>
+                                                                {exercise.duration_min} min
+                                                            </p>
+                                                        ))}
+                                                        <p className='gym-table-exercise-time'>
+                                                            {new Date(exercise.logged_at).toLocaleTimeString('en-US', {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit',
+                                                            })}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div 
+                                                    className={`delete-exercise-btn ${activeSwipeId === exercise.id ? 'visible' : ''}`}
+                                                    onClick={() => handleDeleteExercise(exercise.id)}
+                                                >
+                                                    <span className="delete-btn-text">Delete</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </CollapsibleSection>
+                                ))
+                            ) : (
+                                <p style={{ opacity: 0.5, padding: 10 }}>No workouts available</p>
+                            )}
+                        </div>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 }

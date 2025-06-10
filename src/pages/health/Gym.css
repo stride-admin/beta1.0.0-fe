@@ -23,7 +23,7 @@
 .gym-table-header {
     display: flex;
     border-bottom: 2px solid;
-    align-items: end;
+    align-items: center;
     padding-right: 10px;
     justify-content: space-between;
 }
@@ -35,11 +35,18 @@
     opacity: 0.5;
 }
 
+.gym-table-header-subtitle {
+    font-size: 14px;
+    margin-bottom: 6px;
+    opacity: 0.3;
+}
+
 .gym-table-exercises {
     padding: 10px 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow-y: scroll;
 }
 
 .gym-table-exercise {
@@ -139,4 +146,67 @@
     opacity: 0.5;
     padding: 10px;
     text-align: center;
+}
+
+.workouts-modal-title {
+    font-size: 24px;
+    font-weight: 1000;
+    color: var(--text-color);
+}
+
+.workouts-modal-content {
+    background-color: var(--menu-bg);
+    width: 95vw;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 10px;
+    overflow: scroll;
+    height: 80vh;
+}
+
+.workouts-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.workouts-modal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.workouts-table-date-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid;
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.workouts-modal-close {
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.workouts-modal-close:hover {
+    opacity: 1;
+}
+
+.gym-table-exercise-time {
+    opacity: 0.5;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.gym-table-header-subtitle {
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.gym-table-header-subtitle:hover {
+    opacity: 0.5;
 }

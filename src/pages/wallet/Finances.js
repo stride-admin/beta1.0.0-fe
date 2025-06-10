@@ -6,6 +6,7 @@ import { useWallet } from '../../hooks/useWallet';
 
 import Modal from '../../components/Modal';
 import PieChart from '../../components/PieChart';
+import CollapsibleSection from '../../components/CollapsibleSection';
 
 import { currencyMap } from '../../utils/currencyMap';
 
@@ -309,12 +310,7 @@ export default function Finances() {
                         <div className='transactions-modal-body'>
                             {groupedDebits.length > 0 ? (
                                 groupedDebits.map(group => (
-                                    <div key={group.date}>
-                                        <div className="transactions-table-date-header">
-                                            <h3>{group.formattedDate}</h3>
-                                            <h3 style={{fontSize:'16px'}}>{group.transactions.reduce((acc, debit) => acc + debit.amount, 0)}</h3>
-                                        </div>
-                                        
+                                    <CollapsibleSection key={group.date} title={group.formattedDate}>
                                         {group.transactions.map((debit, index) => (
                                             <div key={debit.transaction_id} className="expense-container">
                                                 <div 
@@ -344,7 +340,7 @@ export default function Finances() {
                                                 </div>
                                             </div>
                                         ))}
-                                    </div>
+                                    </CollapsibleSection>
                                 ))
                             ) : (
                                 <p style={{ opacity: 0.5, padding: 10 }}>No transactions available</p>
