@@ -1,0 +1,39 @@
+.nutrition {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.nutrition-assistant-button {
+    padding: 12px 24px;
+    background-color: var(--tertiary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.nutrition-assistant-button:hover {
+    background-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.nutrition-assistant-button:active {
+    transform: scale(0.95);
+}
+
+/* Modal styles */
+.nutrition-chatbot-modal .modal-content {
+    width: 90%;
+    max-width: 500px;
+    height: 80vh;
+    max-height: 800px;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--background);
+}
