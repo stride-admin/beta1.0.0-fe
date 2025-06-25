@@ -170,7 +170,7 @@ export default function Gym() {
             // Extract just the date part from the ISO string
             const exerciseDate = exercise.logged_at.split('T')[0];
             return exerciseDate === today;
-        });
+        }).sort((a, b) => new Date(b.logged_at) - new Date(a.logged_at)); // Sort from most recent to oldest
     };
     const todayExercises = getTodayExercises();
 

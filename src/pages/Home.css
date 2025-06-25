@@ -71,7 +71,7 @@
 .home-health-content {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .collapsible-container {
