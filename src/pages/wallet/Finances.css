@@ -39,12 +39,12 @@
 .finances-table {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .finances-table-header {
     display: flex;
-    border-bottom: 2px solid;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     align-items: end;
     padding-right: 10px;
     justify-content: space-between;
