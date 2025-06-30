@@ -18,6 +18,16 @@ export default function ExerciseForm({ onClose }) {
         intensity: 0,  // Will be used for distance in cardio
     });
 
+    const [lastExercise, setLastExercise] = useState('');
+
+    // Load last exercise from localStorage on component mount
+    useEffect(() => {
+        const savedLastExercise = localStorage.getItem('lastExerciseName');
+        if (savedLastExercise) {
+            setLastExercise(savedLastExercise);
+        }
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setExerciseData(prev => ({
@@ -37,6 +47,15 @@ export default function ExerciseForm({ onClose }) {
         }
     };
 
+    const handleLastExerciseClick = () => {
+        if (lastExercise) {
+            setExerciseData(prev => ({
+                ...prev,
+                exercise: lastExercise
+            }));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -50,6 +69,9 @@ export default function ExerciseForm({ onClose }) {
             const result = await addExercise(payload);
             if (result) {
                 console.log('Exercise added successfully');
+                // Store the current exercise name as the last exercise
+                localStorage.setItem('lastExerciseName', exerciseData.exercise);
+                setLastExercise(exerciseData.exercise);
             } else {
                 console.error('Failed to add exercise');
             }
@@ -112,6 +134,20 @@ export default function ExerciseForm({ onClose }) {
                         }
                         required
                     />
+                    {lastExercise && (
+                        <small 
+                            style={{ 
+                                color: '#666', 
+                                cursor: 'pointer', 
+                                textDecoration: 'underline',
+                                display: 'block',
+                                marginTop: '4px'
+                            }}
+                            onClick={handleLastExerciseClick}
+                        >
+                            Last added: {lastExercise}
+                        </small>
+                    )}
                 </div>
 
                 {isWeights && (

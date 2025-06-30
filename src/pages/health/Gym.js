@@ -4,6 +4,7 @@ import { useHealth } from '../../hooks/useHealth';
 import PieChart from '../../components/PieChart';
 import Modal from '../../components/Modal';
 import CollapsibleSection from '../../components/CollapsibleSection';
+import GymProgressTracker from '../../components/GymProgressTracker';
 
 import './Gym.css';
 
@@ -176,7 +177,6 @@ export default function Gym() {
 
     // Calculate total cardio minutes for today
     const getTodayCardioMinutes = () => {
-        const todayExercises = getTodayExercises();
         return todayExercises
             .filter(ex => ex.workout_type === 'cardio')
             .reduce((total, ex) => total + (ex.duration_min || 0), 0);
@@ -190,7 +190,7 @@ export default function Gym() {
     return (
         <div className='gym'>
             <div className='gym-header'>
-                <div className='home-health-content'>
+                <div className='gym-charts'>
                     <PieChart 
                         title="Steps"
                         current={getTodaySteps()}
@@ -208,6 +208,7 @@ export default function Gym() {
                     />
                 </div>
             </div>
+
             <div className='gym-workout-table'>
                 <div className='gym-table-header'>
                     <p className='gym-table-header-title'>Today's Workout</p>
@@ -261,6 +262,9 @@ export default function Gym() {
                 </div>
             </div>
 
+            {/* Add the GymProgressTracker component */}
+            <GymProgressTracker exercises={exercises} />
+
             {isAllWorkoutsOpen && (
                 <Modal
                     isOpen={isAllWorkoutsOpen}
@@ -289,7 +293,7 @@ export default function Gym() {
                                                     style={{ 
                                                         transform: 'translateX(0px)',
                                                         transition: 'transform 0.3s ease'
-                                                    }}
+                                    }}
                                                 >
                                                     <div className='gym-table-exercise-content'>
                                                         <p className='gym-table-exercise-name'>{exercise.exercise}</p>

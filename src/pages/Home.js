@@ -6,6 +6,7 @@ import WelcomeModal from '../components/WelcomeModal';
 import ProgressBar from '../components/ProgressBar';
 import PieChart from '../components/PieChart';
 import CollapsibleSection from '../components/CollapsibleSection';
+import GymProgressTracker from '../components/GymProgressTracker';
 
 import { useTodos } from '../hooks/useTodos';
 import { useCalendar } from '../hooks/useCalendar';
@@ -26,6 +27,9 @@ export default function Home() {
         userId, 
         user, setUser, 
     } = useAppContext();
+    const {
+        exercises, 
+    } = useHealth();
 
     const { todos, deleteTodo } = useTodos();
     const { calendar, deleteEvent } = useCalendar();
@@ -167,6 +171,23 @@ export default function Home() {
         };
     };
 
+    const getTodayExercises = () => {
+    const today = new Date().toISOString().split('T')[0];
+        return exercises.filter(exercise => {
+            // Extract just the date part from the ISO string
+            const exerciseDate = exercise.logged_at.split('T')[0];
+            return exerciseDate === today;
+        }).sort((a, b) => new Date(b.logged_at) - new Date(a.logged_at)); // Sort from most recent to oldest
+    };
+    const todayExercises = getTodayExercises();
+
+    // Calculate total cardio minutes for today
+    const getTodayCardioMinutes = () => {
+        return todayExercises
+            .filter(ex => ex.workout_type === 'cardio')
+            .reduce((total, ex) => total + (ex.duration_min || 0), 0);
+    };
+
     // Reset swipe state
     const resetSwipe = (eventId) => {
         const swipeItem = document.querySelector(`.calendar-item-swipeable[data-id="${eventId}"]`);
@@ -210,21 +231,24 @@ export default function Home() {
 
                 <CollapsibleSection title={'Health'}>
                     <div className='home-health-content'>
-                        <PieChart 
-                            title="Steps"
-                            current={1922}
-                            max={3000}
-                            color='#FF7C4C'
-                            radius={pieWidth}
-                        />
-                        <PieChart 
-                            title="Cardio"
-                            current={51}
-                            max={60}
-                            color='#DB4CFF'
-                            radius={pieWidth}
-                            unit="min"
-                        />
+                        <div className='home-health-charts'>
+                            <PieChart 
+                                title="Steps"
+                                current={1922}
+                                max={3000}
+                                color='#FF7C4C'
+                                radius={pieWidth}
+                            />
+                            <PieChart 
+                                title="Cardio"
+                                current={getTodayCardioMinutes()}
+                                max={health?.cardio_goal || 60}
+                                color='#DB4CFF'
+                                radius={pieWidth}
+                                unit="min"
+                            />
+                        </div>
+                        <GymProgressTracker exercises={exercises} />    
                     </div>
                 </CollapsibleSection>
 

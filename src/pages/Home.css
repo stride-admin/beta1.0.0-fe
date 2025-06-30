@@ -70,8 +70,15 @@
 
 .home-health-content {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   padding-bottom: 10px;
+  gap: 20px;
+}
+
+.home-health-charts {
+  display: flex;
+  gap: 20px;
 }
 
 .collapsible-container {
